@@ -1,13 +1,14 @@
-function arrayOf(length, value) {
+/** Returns an array of `length` with values of `value` */
+function filledArray(value, length) {
     return Array(length).fill(value)
 }
 
-function shuffled(array) {
+/** Shuffles the given array in place*/
+function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = floor(random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
-    return array;
 }
 
 function Party(name, color) {
@@ -19,6 +20,6 @@ function Party(name, color) {
     }
 }
 
-BLUE = new Party('blue', '#5868aa');
-RED = new Party('red', '#f95955');
-TIE = new Party('tie', '#000000');
+const BLUE = new Party('blue', '#5868aa');
+const RED = new Party('red', '#f95955');
+const TIE = new Party('tie', '#000000');

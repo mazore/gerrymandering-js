@@ -1,20 +1,16 @@
-function Person(x, y, gridX, gridY, party) {
-    [this.x, this.y] = [x, y];
+function Person(gridX, gridY, party) {
     [this.gridX, this.gridY] = [gridX, gridY];
+    [this.x, this.y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH]; // In pixel coordinates
     this.party = party;
+    this.district = null; // Defined in District
 
     this.getEdges = function() {
         // Edge are in format 'gridX,gridY,dir'. Remember dir can only be 'n' or 'w'
-        const west = [this.gridX, this.gridY, 'w'].join(',');
-        const north = [this.gridX, this.gridY, 'n'].join(',');
-        const east = [this.gridX+1, this.gridY, 'w'].join(',');
-        const south = [this.gridX, this.gridY+1, 'n'].join(',');
-
         const edges = [
-            this.gridX == 0 ? null : west,
-            this.gridY == 0 ? null : north,
-            this.gridX == GRID_WIDTH-1 ? null : east,
-            this.gridY == GRID_WIDTH-1 ? null : south,
+            gridX == 0            ? null : `${gridX},${gridY},w`,
+            gridY == 0            ? null : `${gridX},${gridY},n`,
+            gridX == GRID_WIDTH-1 ? null : `${gridX+1},${gridY},w`,
+            gridY == GRID_WIDTH-1 ? null : `${gridX},${gridY+1},n`,
         ]
         return edges.filter(edge => edge != null);
     }
