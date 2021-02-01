@@ -1,20 +1,40 @@
 function Canvas() {
-    // Create grid of people with randomized parties
-    this.people_grid = []
-    const people_count = self.parameters.grid_width ** 2
-    const red_count = round(self.parameters.percentage_red / 100 * people_count)
-    parties = [RED] * red_count + [BLUE] * (people_count - red_count)
-    parties = fast_shuffled(parties)
+    // Generate people
+    this.peopleGrid = [];
+    const peoplePerParty = Math.ceil(GRID_WIDTH ** 2 / 2);
+    let parties = arrayOf(peoplePerParty, BLUE).concat(arrayOf(peoplePerParty, RED));
+    parties = shuffled(parties);
+    for (let gridY = 0; gridY < GRID_WIDTH; gridY++) {
+        let row = [];
+        for (let gridX = 0; gridX < GRID_WIDTH; gridX++) {
+            const [x, y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH];
+            const party = parties[gridX + gridY * GRID_WIDTH];
+            row.push(new Person(x, y, gridX, gridY, party));
+        }
+        this.peopleGrid.push(row);
+    }
 
-    square_width = self.parameters.canvas_width / self.parameters.grid_width
-    for grid_y in range(0, self.parameters.grid_width):
-        row = []
-        for grid_x in range(0, self.parameters.grid_width):
-            p1 = (grid_x * square_width, grid_y * square_width)
-            p2 = ((grid_x + 1) * square_width, (grid_y + 1) * square_width)
-            party = parties[grid_x + grid_y * self.parameters.grid_width]
-            row.append(Person(self, p1, p2, grid_x, grid_y, party=party))
-        self.people_grid.append(row)
-    for person in self.iter_people():
-        person.secondary_init()
+    // Generate districts
+    this.districts = []
+    const districtWidth = Math.sqrt(DISTRICT_SIZE)
+    for (let x = 0; x < sqrt(NUM_DISTRICTS); x++) {
+        for (let y = 0; y < sqrt(NUM_DISTRICTS); y++) {
+            const gridX1 = x * districtWidth;
+            const gridY1 = y * districtWidth;
+            const gridX2 = (x+1) * districtWidth;
+            const gridY2 = (y+1) * districtWidth;
+            this.districts.push(new District(this, gridX1, gridY1, gridX2, gridY2));
+        }
+    }
+
+    this.draw = function() {
+        for (const row of this.peopleGrid) {
+            for (const person of row) {
+                person.draw();
+            }
+        }
+        for (const district of this.districts) {
+            district.draw()
+        }
+    }
 }
