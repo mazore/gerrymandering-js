@@ -59,10 +59,10 @@ function Person(canvas, id, gridX, gridY, party) {
     /** Change which district this person belongs to, does not change location or party */
     this.changeDistricts = function(destination) {
         this.district.people.splice(this.district.people.indexOf(this), 1);
-        this.district.net_advantage -= this.party.equalTo(HELP_PARTY) ? 1 : -1;
+        this.district.netAdvantage -= this.party.equalTo(HELP_PARTY) ? 1 : -1;
         destination.people.push(this);
+        destination.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
         this.district = destination;
-        this.district.net_advantage += this.party.equalTo(HELP_PARTY) ? 1 : -1
     }
 
     /** Returns a list of districts neighboring this person, not including the district this is in */

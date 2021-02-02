@@ -10,8 +10,11 @@ function setup() {
 	canvas.draw();
 }
 
+let time;
 function draw() {
-	swapManager.swap();
+	for (let i = 0; i < 50; i++) {
+		swapManager.swap();
+	}
 	canvas.draw();
 }
 

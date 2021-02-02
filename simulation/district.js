@@ -23,7 +23,7 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
     }
 
     this.getWinner = function() {
-        if (this.tied) {
+        if (this.tied()) {
             return TIE;
         }
         return this.netAdvantage > 0 ? HELP_PARTY : HINDER_PARTY;
@@ -69,24 +69,21 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
         }
     }
 
-    Object.assign(this, {
-        get tied() {
-            return this.netAdvantage == 0;;
-        }
-    });
+    this.tied = function() {
+        return this.netAdvantage == 0;
+    }
 
     /** Returns which party this district prioritizes swapping to another district (giving away) */
-    // this.idealGiveAway = function() {
-        // if (FAVOR_TIE) {
-            // if (this.tied) {
-                // return null;
-            // }
-            // return this.getWinner();
-        // }
-//
-        // if (-4 <= this.netAdvantage && this.netAdvantage <= 2) {
-            // return HINDER_PARTY // If flippable/at risk, try to get more HELP_PARTY people
-        // }
-        // return HELP_PARTY // If not flippable or safe HELP_PARTY, share our HELP_PARTY people
-    // }
+    this.idealGiveAway = function() {
+        if (FAVOR_TIE) {
+            if (this.tied()) {
+                return null;
+            }
+            return this.getWinner();
+        }
+        if (-4 <= this.netAdvantage && this.netAdvantage <= 2) {
+            return HINDER_PARTY // If flippable/at risk, try to get more HELP_PARTY people
+        }
+        return HELP_PARTY // If not flippable or safe HELP_PARTY, share our HELP_PARTY people
+    }
 }
