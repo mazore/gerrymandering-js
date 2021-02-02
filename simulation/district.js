@@ -1,4 +1,9 @@
-function District(canvas, gridX1, gridY1, gridX2, gridY2) {
+/**
+ * Represents a collection of people, with a line drawn around them. The winner is determined by which party has the
+ * most people contained in this district
+ */
+function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
+    this.id = id;
     // gridX1 etc. bound the district square in grid coords
     this.gridX1 = gridX1;
     this.gridY1 = gridY1;
@@ -18,7 +23,7 @@ function District(canvas, gridX1, gridY1, gridX2, gridY2) {
     }
 
     this.getWinner = function() {
-        if (this.netAdvantage == 0) {
+        if (this.tied) {
             return TIE;
         }
         return this.netAdvantage > 0 ? HELP_PARTY : HINDER_PARTY;
@@ -36,9 +41,8 @@ function District(canvas, gridX1, gridY1, gridX2, gridY2) {
 
         // Outline
         /**
-         * Edges that outline the district (the ones to draw) will only be
-         * edges of one person in the district. We add up all the edges (in
-         * form 'gridX,gridY,dir') and the ones with 1 occurrence we draw.
+         * Edges that outline the district (the ones to draw) will only be edges of one person in the district. We add
+         * up all the edges (in form 'gridX,gridY,dir') and the ones with 1 occurrence we draw.
          */
         const edge_occurrence_map = new Map();
         for (const person of this.people) {
@@ -64,4 +68,25 @@ function District(canvas, gridX1, gridY1, gridX2, gridY2) {
             }
         }
     }
+
+    Object.assign(this, {
+        get tied() {
+            return this.netAdvantage == 0;;
+        }
+    });
+
+    /** Returns which party this district prioritizes swapping to another district (giving away) */
+    // this.idealGiveAway = function() {
+        // if (FAVOR_TIE) {
+            // if (this.tied) {
+                // return null;
+            // }
+            // return this.getWinner();
+        // }
+//
+        // if (-4 <= this.netAdvantage && this.netAdvantage <= 2) {
+            // return HINDER_PARTY // If flippable/at risk, try to get more HELP_PARTY people
+        // }
+        // return HELP_PARTY // If not flippable or safe HELP_PARTY, share our HELP_PARTY people
+    // }
 }
