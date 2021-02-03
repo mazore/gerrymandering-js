@@ -50,4 +50,16 @@ function Canvas() {
             district.draw()
         }
     }
+
+    this.getScore = function() {
+        m = new Map();
+        m.set(BLUE, 0);
+        m.set(RED, 0);
+        m.set(TIE, 0);
+        for (const district of this.districts) {
+            const winner = district.getWinner();
+            m.set(winner, m.get(winner) + 1);
+        }
+        return m;
+    }
 }

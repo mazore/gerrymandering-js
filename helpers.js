@@ -37,3 +37,21 @@ function shuffled(original) {
     }
     return copied;
 }
+
+/** Pass in a list of [(item, weight), ...], from https://blobfolio.com/2019/randomizing-weighted-choices-in-javascript */
+function weightedChoice(data) {
+    let total = 0;
+    for (let i = 0; i < data.length; i++) {
+        total += data[i][1];
+
+    }
+    const threshold = Math.random() * total;
+    total = 0;
+    for (let i = 0; i < data.length - 1; ++i) {
+        total += data[i][1];
+        if (total >= threshold) {
+            return data[i][0];
+        }
+    }
+    return data[data.length - 1][0];
+}

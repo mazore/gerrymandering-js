@@ -31,9 +31,9 @@ function Person(canvas, id, gridX, gridY, party) {
             this.personNW = canvas.peopleGrid[this.gridY - 1][this.gridX - 1];
 
         const f = item => item != null;
-        // adjacent_people - up to 4 people in direct cardinal directions
+        // adjacentPeople - up to 4 people in direct cardinal directions
         this.adjacentPeople = [this.personWest, this.personNorth, this.personEast, this.personSouth].filter(f);
-        // surrounding_people - always length 8, includes all people in surrounding 8 squares, undefined if no person
+        // surroundingPeople - always length 8, includes all people in surrounding 8 squares, undefined if no person
         this.surroundingPeople = [this.personNorth, this.personNE, this.personEast, this.personSE,
                                   this.personSouth, this.personSW, this.personWest, this.personNW];
     }

@@ -9,4 +9,4 @@ function Party(name, color) {
 
 const BLUE = new Party('blue', '#5868aa');
 const RED = new Party('red', '#f95955');
-const TIE = new Party('tie', '#000000');
+const TIE = new Party('tie', '#333');
