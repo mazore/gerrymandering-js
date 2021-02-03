@@ -28,16 +28,6 @@ Array.prototype.group = function(f){
     return r
 }
 
-/** Returns the given array shuffled */
-function shuffled(original) {
-    copied = [...original]
-    for (let i = copied.length - 1; i > 0; i--) {
-        const j = floor(random() * (i + 1));
-        [copied[i], copied[j]] = [copied[j], copied[i]];
-    }
-    return copied;
-}
-
 /** Pass in a list of [(item, weight), ...], from https://blobfolio.com/2019/randomizing-weighted-choices-in-javascript */
 function weightedChoice(data) {
     let total = 0;

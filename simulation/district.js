@@ -22,13 +22,6 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
         }
     }
 
-    this.getWinner = function() {
-        if (this.tied()) {
-            return TIE;
-        }
-        return this.netAdvantage > 0 ? HELP_PARTY : HINDER_PARTY;
-    }
-
     this.draw = function() {
         // Translucent fill
         noStroke();
@@ -47,8 +40,7 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
         const edgeOccurrenceMap = new Map();
         for (const person of this.people) {
             for (const edge of person.getEdges()) {
-                let occurrence = edgeOccurrenceMap.get(edge);
-                occurrence = occurrence == undefined ? 0 : occurrence;
+                let occurrence = edgeOccurrenceMap.get(edge) ?? 0;
                 edgeOccurrenceMap.set(edge, occurrence + 1);
             }
         }
@@ -69,14 +61,21 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
         }
     }
 
-    this.tied = function() {
+    this.getWinner = function() {
+        if (this.isTied()) {
+            return TIE;
+        }
+        return this.netAdvantage > 0 ? HELP_PARTY : HINDER_PARTY;
+    }
+
+    this.isTied = function() {
         return this.netAdvantage == 0;
     }
 
     /** Returns which party this district prioritizes swapping to another district (giving away) */
     this.idealGiveAway = function() {
         if (FAVOR_TIE) {
-            if (this.tied()) {
+            if (this.isTied()) {
                 return null;
             }
             return this.getWinner();
@@ -92,7 +91,7 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
     this.getDistrict1Weight = function() {
         if (0 < this.netAdvantage && this.netAdvantage <= 2) // If at risk
             return 1
-        if (this.tied())
+        if (this.isTied())
             return 11
         if (-4 <= this.netAdvantage && this.netAdvantage <= 0) // If flippable
             return 4.35442295

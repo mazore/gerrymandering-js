@@ -11,6 +11,7 @@ function Person(canvas, id, gridX, gridY, party) {
     this.atEast = this.gridX == GRID_WIDTH - 1;
     this.atSouth = this.gridY == GRID_WIDTH - 1;
 
+    /** Called after all people are initialized */
     this.secondaryInit = function() {
         if (!this.atWest)
             this.personWest = canvas.peopleGrid[this.gridY][this.gridX - 1];
@@ -38,31 +39,11 @@ function Person(canvas, id, gridX, gridY, party) {
                                   this.personSouth, this.personSW, this.personWest, this.personNW];
     }
 
-    this.getEdges = function() {
-        // Edge are in format 'gridX,gridY,dir'. Remember dir can only be 'n' or 'w'
-        const edges = [
-            this.atWest  ? null : `${gridX},${gridY},w`,
-            this.atNorth ? null : `${gridX},${gridY},n`,
-            this.atEast  ? null : `${gridX+1},${gridY},w`,
-            this.atSouth ? null : `${gridX},${gridY+1},n`,
-        ]
-        return edges.filter(edge => edge != null);
-    }
-
     this.draw = function() {
         const w = SQUARE_WIDTH;
         noStroke();
         fill(party.color);
         rect(this.x + w/4, this.y + w/4, w/2, w/2);
-    }
-
-    /** Change which district this person belongs to, does not change location or party */
-    this.changeDistricts = function(destination) {
-        this.district.people.splice(this.district.people.indexOf(this), 1);
-        this.district.netAdvantage -= this.party.equalTo(HELP_PARTY) ? 1 : -1;
-        destination.people.push(this);
-        destination.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
-        this.district = destination;
     }
 
     /** Returns a list of districts neighboring this person, not including the district this is in */
@@ -74,6 +55,17 @@ function Person(canvas, id, gridX, gridY, party) {
             }
         }
         return result;
+    }
+
+    this.getEdges = function() {
+        // Edge are in format 'gridX,gridY,dir'. Remember dir can only be 'n' or 'w'
+        const edges = [
+            this.atWest  ? null : `${gridX},${gridY},w`,
+            this.atNorth ? null : `${gridX},${gridY},n`,
+            this.atEast  ? null : `${gridX+1},${gridY},w`,
+            this.atSouth ? null : `${gridX},${gridY+1},n`,
+        ]
+        return edges.filter(edge => edge != null);
     }
 
     /**
@@ -101,5 +93,14 @@ function Person(canvas, id, gridX, gridY, party) {
             }
         }
         return false;
+    }
+
+    /** Change which district this person belongs to, does not change location or party */
+    this.changeDistricts = function(destination) {
+        this.district.people.splice(this.district.people.indexOf(this), 1);
+        this.district.netAdvantage -= this.party.equalTo(HELP_PARTY) ? 1 : -1;
+        destination.people.push(this);
+        destination.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
+        this.district = destination;
     }
 }

@@ -5,7 +5,7 @@ function Canvas() {
     // Make sure people are random but equal numbers for each party
     const peoplePerParty = ceil(GRID_WIDTH ** 2 / 2);
     let parties = filledArray(BLUE, peoplePerParty).concat(filledArray(RED, peoplePerParty));
-    parties = shuffled(parties);
+    parties = shuffle(parties);
     let districtId = 0;
     for (let gridY = 0; gridY < GRID_WIDTH; gridY++) {
         let row = [];

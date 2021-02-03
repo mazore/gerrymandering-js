@@ -24,7 +24,7 @@ function SwapManager() {
         for (this.district1 of this.district1Generator()) {
             const idealParty1 = this.district1.idealGiveAway();
 
-            for (this.person1 of shuffled(this.district1.people)) {
+            for (this.person1 of shuffle(this.district1.people)) {
                 if (idealParty1 != null && !this.person1.party.equalTo(idealParty1)) {
                     continue; // If is not the ideal party to give away for district1
                 }
@@ -36,11 +36,11 @@ function SwapManager() {
         }
     }
 
-    /** Gets district2 and person2. If no suitable district2 is found, we raise RestartGettingPeopleError */
+    /** Gets district2 and person2. If no suitable district2 is found, we return 'restart' */
     this.getPerson2 = function() {
         for (this.district2 of shuffle(this.person1.getAdjacentDistricts())) {
             const party2CanBeHelpParty = this.party2CanBeHelpParty();
-            const aDistrictTied = FAVOR_TIE ? this.district1.tied() || this.district2.tied() : null;
+            const aDistrictTied = FAVOR_TIE ? this.district1.isTied() || this.district2.isTied() : null;
 
             for (this.person2 of this.getPerson2Choices()) {
                 if (!this.person2.getAdjacentDistricts().containsObject(this.district1)) {
@@ -56,7 +56,7 @@ function SwapManager() {
                     continue; // If swapping will cause a district to become not tied
                 }
                 if (!party2CanBeHelpParty && this.person2.party.equalTo(HELP_PARTY)) {
-                    return 'restart'; // Better than `continue`
+                    return 'restart'; // Better than `continue` not sure why
                 }
                 return;
             }
@@ -79,6 +79,7 @@ function SwapManager() {
         }
     }
 
+    /** Yields district1 choices weighted using getDistrict1Weight */
     this.district1Generator = function*() {
         const districtWeightMap = new Map();
         for (district of canvas.districts) {
@@ -91,13 +92,13 @@ function SwapManager() {
         }
     }
 
-    /** Returns uf person2 can be HELP_PARTY without having a decrease in HELP_PARTY's total score */
+    /** Returns if person2 can be HELP_PARTY without having a decrease in HELP_PARTY's total score */
     this.party2CanBeHelpParty = function() {
         if (!this.person1.party.equalTo(HINDER_PARTY))
             return true; // If netAdvantages will stay the same or district2's will increase
         // Now we know that district2 netAdvantage is decreasing by 2 and district1 netAdvantage is increasing by 2
         if (this.district2.netAdvantage == 2) { // If district2 will become tie from HELP_PARTY
-            if (this.district1.tied())
+            if (this.district1.isTied())
                 return true; // district1 will become HELP_PARTY from tie
             else
                 return false;

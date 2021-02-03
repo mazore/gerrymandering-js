@@ -1,40 +1,79 @@
+var canvas;
+var swapManager;
+var running = false;
+
 function setup() {
 	defineParameters();
-
 	createCanvas(CANVAS_WIDTH, CANVAS_WIDTH);
-	// noLoop();
 
 	canvas = new Canvas();
 	swapManager = new SwapManager();
+
+	canvas.draw();
+
+	// speedTest();
+	// scoreTest();
 }
 
 function draw() {
-	for (let i = 0; i < 50; i++) {
-		swapManager.swap();
+	if (running) {
+		for (let i = 0; i < 500; i++) {
+			swapManager.swap();
+		}
+		canvas.draw();
 	}
-	canvas.draw();
 }
 
 function mousePressed() {
-	swapManager.swap();
-	canvas.draw();
+	if (mouseButton == LEFT) {
+		running = !running;
+	}
 }
 
-function scoreTest() {
+addEventListener('contextmenu', function(event) {
+	event.preventDefault();
+	swapManager.swap();
+	canvas.draw();
+});
+
+function speedTest() { // Most recent about 27.18
+	noLoop();
+	let timeSum = 0;
+	let numIters = 1000;
+	for (let i = 0; i < numIters; i++) {
+		canvas = new Canvas();
+		swapManager = new SwapManager();
+
+		t = millis();
+		for (let i = 0; i < 1000; i++) {
+			swapManager.swap();
+		}
+		canvas.draw();
+		timeSum += millis() - t;
+
+		if (i % 100 == 0) {
+			print(`${i / 10}% done`);
+		}
+	}
+	console.log(timeSum / numIters);
+}
+
+function scoreTest() { // Most recent about 29.085
+	noLoop();
 	let scoreSum = 0;
-	for (let i = 0; i < 1000; i++) {
+	let numIters = 1000;
+	for (let i = 0; i < numIters; i++) {
 		canvas = new Canvas();
 		swapManager = new SwapManager();
 
 		for (let i = 0; i < 1000; i++) {
 			swapManager.swap();
 		}
-		// canvas.draw();
 		scoreSum += canvas.getScore().get(BLUE);
 
-		if (i % 10 == 0) {
-			print(`${i / 10}% done`)
+		if (i % 100 == 0) {
+			print(`${i / 10}% done`);
 		}
 	}
-	console.log(scoreSum / 1000);
+	console.log(scoreSum / numIters);
 }
