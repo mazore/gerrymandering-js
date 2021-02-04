@@ -41,13 +41,13 @@ function Canvas() {
 
     this.draw = function() {
         background(255);
+        for (const district of this.districts) {
+            district.draw()
+        }
         for (const row of this.peopleGrid) {
             for (const person of row) {
                 person.draw();
             }
-        }
-        for (const district of this.districts) {
-            district.draw()
         }
     }
 

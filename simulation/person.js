@@ -42,7 +42,7 @@ function Person(canvas, id, gridX, gridY, party) {
     this.draw = function() {
         const w = SQUARE_WIDTH;
         noStroke();
-        fill(party.color);
+        fill(party.color1);
         rect(this.x + w/4, this.y + w/4, w/2, w/2);
     }
 

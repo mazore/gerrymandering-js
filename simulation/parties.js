@@ -1,12 +1,28 @@
 function Party(name, color) {
     this.name = name
-    this.color = color
+    this.color1 = color // Person color, darker
+    this.color2 = lighten(color, 0.5) // District color, lighter
 
     this.equalTo = function(other) {
         return this.name == other.name;
     }
 }
 
-const BLUE = new Party('blue', '#5868aa');
-const RED = new Party('red', '#f95955');
-const TIE = new Party('tie', '#333');
+/** Returns r, g, and b channels from 'rgb(r, g, b)' string */
+function getRGB(str) {
+    const m = str.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+    return m.slice(1, 4);
+}
+
+/** Returns 'rgb(r, g, b)' string that is `percent` percent towards white, 1 being white, 0 being no change */
+function lighten(str, percent) {
+    let [r, g, b] = getRGB(str);
+    r = parseInt(r) + (255 - r)*percent;
+    g = parseInt(g) + (255 - g)*percent;
+    b = parseInt(b) + (255 - b)*percent;
+    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+}
+
+const BLUE = new Party('blue', 'rgb(88, 104, 170)');
+const RED = new Party('red', 'rgb(249, 89, 85)');
+const TIE = new Party('tie', 'rgb(51, 51, 51)');

@@ -25,9 +25,7 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
     this.draw = function() {
         // Translucent fill
         noStroke();
-        const districtColor = color(this.getWinner().color);
-        districtColor.setAlpha(100);
-        fill(districtColor);
+        fill(this.getWinner().color2);
         for (const person of this.people) {
             rect(person.x, person.y, SQUARE_WIDTH, SQUARE_WIDTH);
         }
@@ -46,7 +44,7 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
         }
         // Draw outline
         stroke(0);
-        strokeWeight(2);
+        strokeWeight(3);
         for (const [edge, occurrence] of edgeOccurrenceMap) {
             if (occurrence > 1) {
                 continue;

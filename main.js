@@ -1,10 +1,22 @@
+/*
+TODO:
+- add pie charts
+- speed up canvas drawing
+- add interface/ui
+- district hover information
+- experiment with trying to keep big districts more cohesive/clumped/less strung out
+*/
+
 var canvas;
 var swapManager;
 var running = false;
 
+const fr = 30;
+
 function setup() {
 	defineParameters();
 	createCanvas(CANVAS_WIDTH, CANVAS_WIDTH);
+	frameRate(fr);
 
 	canvas = new Canvas();
 	swapManager = new SwapManager();
@@ -17,10 +29,17 @@ function setup() {
 
 function draw() {
 	if (running) {
-		for (let i = 0; i < 500; i++) {
-			swapManager.swap();
-		}
+		frameStart = millis();
+
 		canvas.draw();
+
+		for (var swapsDone = 0; true; swapsDone++) {
+			swapManager.swap();
+			if (millis() - frameStart > 1000/fr) {
+				break;
+			}
+		}
+		print(`${swapsDone} swaps done this frame`)
 	}
 }
 
