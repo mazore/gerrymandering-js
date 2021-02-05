@@ -1,5 +1,5 @@
 /** Represents one person, who gets one vote for one party. District lines are drawn around these people */
-function Person(canvas, id, gridX, gridY, party) {
+function Person(simulation, id, gridX, gridY, party) {
     this.id = id;
     [this.gridX, this.gridY] = [gridX, gridY];
     [this.x, this.y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH]; // In pixel coordinates
@@ -14,36 +14,39 @@ function Person(canvas, id, gridX, gridY, party) {
     /** Called after all people are initialized */
     this.secondaryInit = function() {
         if (!this.atWest)
-            this.personWest = canvas.peopleGrid[this.gridY][this.gridX - 1];
+            this.personWest = simulation.peopleGrid[this.gridY][this.gridX - 1];
         if (!this.atNorth)
-            this.personNorth = canvas.peopleGrid[this.gridY - 1][this.gridX];
+            this.personNorth = simulation.peopleGrid[this.gridY - 1][this.gridX];
         if (!this.atEast)
-            this.personEast = canvas.peopleGrid[this.gridY][this.gridX + 1];
+            this.personEast = simulation.peopleGrid[this.gridY][this.gridX + 1];
         if (!this.atSouth)
-            this.personSouth = canvas.peopleGrid[this.gridY + 1][this.gridX];
+            this.personSouth = simulation.peopleGrid[this.gridY + 1][this.gridX];
 
         if (!this.atNorth && !this.atEast) // Northeast
-            this.personNE = canvas.peopleGrid[this.gridY - 1][this.gridX + 1];
+            this.personNE = simulation.peopleGrid[this.gridY - 1][this.gridX + 1];
         if (!this.atSouth && !this.atEast) // Southeast
-            this.personSE = canvas.peopleGrid[this.gridY + 1][this.gridX + 1];
+            this.personSE = simulation.peopleGrid[this.gridY + 1][this.gridX + 1];
         if (!this.atSouth && !this.atWest) // Southwest
-            this.personSW = canvas.peopleGrid[this.gridY + 1][this.gridX - 1];
+            this.personSW = simulation.peopleGrid[this.gridY + 1][this.gridX - 1];
         if (!this.atNorth && !this.atWest) // Northwest
-            this.personNW = canvas.peopleGrid[this.gridY - 1][this.gridX - 1];
+            this.personNW = simulation.peopleGrid[this.gridY - 1][this.gridX - 1];
 
         const f = item => item != null;
-        // adjacentPeople - up to 4 people in direct cardinal directions
+        /** adjacentPeople - up to 4 people in direct cardinal directions */
         this.adjacentPeople = [this.personWest, this.personNorth, this.personEast, this.personSouth].filter(f);
-        // surroundingPeople - always length 8, includes all people in surrounding 8 squares, undefined if no person
+        /** surroundingPeople - always length 8, includes all people in surrounding 8 squares, undefined if no person */
         this.surroundingPeople = [this.personNorth, this.personNE, this.personEast, this.personSE,
                                   this.personSouth, this.personSW, this.personWest, this.personNW];
     }
 
     this.draw = function() {
-        const w = SQUARE_WIDTH;
+        const w = SQUARE_WIDTH * 0.175;
         noStroke();
         fill(party.color1);
-        rect(this.x + w/4, this.y + w/4, w/2, w/2);
+        const offset = SQUARE_WIDTH/2 - w;
+        rect(this.x + offset, this.y + offset, w*2, w*2);
+        // rect(this.x + w/3, this.y + w/3, w/3, w/3);
+        // rect(this.x + w/4, this.y + w/4, w/2, w/2);
     }
 
     /** Returns a list of districts neighboring this person, not including the district this is in */

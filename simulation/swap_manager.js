@@ -82,7 +82,7 @@ function SwapManager() {
     /** Yields district1 choices weighted using getDistrict1Weight */
     this.district1Generator = function*() {
         const districtWeightMap = new Map();
-        for (district of canvas.districts) {
+        for (district of simulation.districts) {
             districtWeightMap.set(district, district.getDistrict1Weight());
         }
         while (true) {

@@ -2,7 +2,7 @@
  * Represents a collection of people, with a line drawn around them. The winner is determined by which party has the
  * most people contained in this district
  */
-function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
+function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
     this.id = id;
     // gridX1 etc. bound the district square in grid coords
     this.gridX1 = gridX1;
@@ -14,7 +14,7 @@ function District(canvas, id, gridX1, gridY1, gridX2, gridY2) {
     this.people = []; // Array of people contained
     for (let gridY = gridY1; gridY < gridY2; gridY++) {
         for (let gridX = gridX1; gridX < gridX2; gridX++) {
-            const person = canvas.peopleGrid[gridY][gridX];
+            const person = simulation.peopleGrid[gridY][gridX];
 
             this.people.push(person);
             person.district = this;

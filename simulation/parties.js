@@ -8,10 +8,9 @@ function Party(name, color) {
     }
 }
 
-/** Returns r, g, and b channels from 'rgb(r, g, b)' string */
+/** Returns r, g, and b channels (strings) from 'rgb(r, g, b)' string */
 function getRGB(str) {
-    const m = str.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
-    return m.slice(1, 4);
+    return str.match(/\d+/g);
 }
 
 /** Returns 'rgb(r, g, b)' string that is `percent` percent towards white, 1 being white, 0 being no change */

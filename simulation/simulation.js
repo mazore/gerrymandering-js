@@ -1,9 +1,9 @@
 /** Manages people, districts, and swapping */
-function Canvas() {
+function Simulation() {
     // Generate people
     this.peopleGrid = []; // 2D array of Person objects
     // Make sure people are random but equal numbers for each party
-    const peoplePerParty = ceil(GRID_WIDTH ** 2 / 2);
+    const peoplePerParty = Math.ceil(GRID_WIDTH ** 2 / 2);
     let parties = filledArray(BLUE, peoplePerParty).concat(filledArray(RED, peoplePerParty));
     parties = shuffle(parties);
     let districtId = 0;
@@ -49,6 +49,7 @@ function Canvas() {
                 person.draw();
             }
         }
+        updatePieCharts();
     }
 
     this.getScore = function() {
