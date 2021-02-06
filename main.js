@@ -1,7 +1,11 @@
 /*
 TODO:
+- move running and SwapManager into Simulation
+- abstract pie chart drawing into draw functions
+- test not using in place shuffle
 - finish district pie chart
 - add population pie chart
+- when all red districts are high margin, pick one to try to flip
 - speed up simulation drawing
 - add interface/ui
 - district hover information
@@ -12,43 +16,41 @@ var simulation;
 var swapManager;
 var running = false;
 
-const fr = 30;
-
-function setup() {
+window.onload = function() {
 	defineParameters();
-	createCanvas(SIMULATION_WIDTH, SIMULATION_WIDTH).parent('p5canvas');
-	frameRate(fr);
 
 	simulation = new Simulation();
+	simulation.draw();
 	swapManager = new SwapManager();
 
-	simulation.draw();
-
-	// speedTest(); // Most recent about 27.18
+	// speedTest(); // Most recent about 24.028
 	// scoreTest(); // Most recent about 29.085
+
+	draw();
 }
 
 function draw() {
+	simulation.draw();
 	if (running) {
-		frameStart = millis();
+		frameStart = window.performance.now();
 
-		simulation.draw();
 
 		for (var swapsDone = 0; true; swapsDone++) {
 			swapManager.swap();
-			if (millis() - frameStart > 1000/fr) {
+			if (window.performance.now() - frameStart > 1000/30) {
 				break;
 			}
 		}
-		// print(`${swapsDone} swaps done this frame`)
+		// console.log(`${swapsDone} swaps done this frame`)
 	}
+	requestAnimationFrame(draw);
 }
 
-function mousePressed() {
-	if (mouseButton == LEFT) {
+addEventListener('mousedown', function(event) {
+	if (event.button == 0) { // Left click
 		running = !running;
 	}
-}
+});
 
 addEventListener('contextmenu', function(event) { // Right click
 	event.preventDefault();

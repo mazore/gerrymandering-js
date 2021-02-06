@@ -24,10 +24,9 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
 
     this.draw = function() {
         // Translucent fill
-        noStroke();
-        fill(this.getWinner().color2);
+        const color = this.getWinner().color2;
         for (const person of this.people) {
-            rect(person.x, person.y, SQUARE_WIDTH, SQUARE_WIDTH);
+            rect(simulation.ctx, person.x, person.y, SQUARE_WIDTH, SQUARE_WIDTH, color);
         }
 
         // Outline
@@ -43,8 +42,6 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
             }
         }
         // Draw outline
-        stroke(0);
-        strokeWeight(3);
         for (const [edge, occurrence] of edgeOccurrenceMap) {
             if (occurrence > 1) {
                 continue;
@@ -52,9 +49,9 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
             const [gridX, gridY, dir] = edge.split(',');
             const [x, y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH];
             if (dir == 'n') {
-                line(x, y, x + SQUARE_WIDTH, y);
+                line(simulation.ctx, x, y, x + SQUARE_WIDTH, y, 3, '#000');
             } else if (dir == 'w') {
-                line(x, y, x, y + SQUARE_WIDTH);
+                line(simulation.ctx, x, y, x, y + SQUARE_WIDTH, 3, '#000');
             }
         }
     }

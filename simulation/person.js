@@ -41,12 +41,8 @@ function Person(simulation, id, gridX, gridY, party) {
 
     this.draw = function() {
         const w = SQUARE_WIDTH * 0.175;
-        noStroke();
-        fill(party.color1);
         const offset = SQUARE_WIDTH/2 - w;
-        rect(this.x + offset, this.y + offset, w*2, w*2);
-        // rect(this.x + w/3, this.y + w/3, w/3, w/3);
-        // rect(this.x + w/4, this.y + w/4, w/2, w/2);
+        rect(simulation.ctx, this.x + offset, this.y + offset, w*2, w*2, party.color1);
     }
 
     /** Returns a list of districts neighboring this person, not including the district this is in */

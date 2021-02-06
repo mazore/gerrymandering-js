@@ -28,6 +28,24 @@ Array.prototype.group = function(f){
     return r
 }
 
+function shuffle(arr, bool) {
+    var isView = ArrayBuffer && ArrayBuffer.isView && ArrayBuffer.isView(arr);
+    arr = bool || isView ? arr : arr.slice();
+
+    var rnd,
+        tmp,
+        idx = arr.length;
+    while (idx > 1) {
+        rnd = (Math.random(0, 1) * idx) | 0;
+
+        tmp = arr[--idx];
+        arr[idx] = arr[rnd];
+        arr[rnd] = tmp;
+    }
+
+    return arr;
+}
+
 /** Pass in a list of [(item, weight), ...], from https://blobfolio.com/2019/randomizing-weighted-choices-in-javascript */
 function weightedChoice(data) {
     let total = 0;
