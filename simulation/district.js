@@ -49,9 +49,9 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
             const [gridX, gridY, dir] = edge.split(',');
             const [x, y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH];
             if (dir == 'n') {
-                line(simulation.ctx, x, y, x + SQUARE_WIDTH, y, 3, '#000');
+                line(simulation.ctx, x, y, x + SQUARE_WIDTH, y, '#000', 3);
             } else if (dir == 'w') {
-                line(simulation.ctx, x, y, x, y + SQUARE_WIDTH, 3, '#000');
+                line(simulation.ctx, x, y, x, y + SQUARE_WIDTH, '#000', 3);
             }
         }
     }

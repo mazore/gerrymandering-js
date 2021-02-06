@@ -1,3 +1,4 @@
+/** Manages the swapping of two people between districts. See readme for more information on how this works */
 function SwapManager() {
     this.swapsDone = 0;
     // person[n] is originally from district[n]
@@ -24,7 +25,7 @@ function SwapManager() {
         for (this.district1 of this.district1Generator()) {
             const idealParty1 = this.district1.idealGiveAway();
 
-            for (this.person1 of shuffle(this.district1.people)) {
+            for (this.person1 of shuffled(this.district1.people)) {
                 if (idealParty1 != null && !this.person1.party.equalTo(idealParty1)) {
                     continue; // If is not the ideal party to give away for district1
                 }
@@ -38,7 +39,7 @@ function SwapManager() {
 
     /** Gets district2 and person2. If no suitable district2 is found, we return 'restart' */
     this.getPerson2 = function() {
-        for (this.district2 of shuffle(this.person1.getAdjacentDistricts())) {
+        for (this.district2 of shuffled(this.person1.getAdjacentDistricts())) {
             const party2CanBeHelpParty = this.party2CanBeHelpParty();
             const aDistrictTied = FAVOR_TIE ? this.district1.isTied() || this.district2.isTied() : null;
 

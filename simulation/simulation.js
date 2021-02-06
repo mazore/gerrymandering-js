@@ -1,5 +1,8 @@
 /** Manages people, districts, and swapping */
 function Simulation() {
+    this.running = false;
+	this.swapManager = new SwapManager();
+
     this.canvas = document.getElementById('simulation');
     this.ctx = this.canvas.getContext('2d');
 
@@ -15,7 +18,7 @@ function Simulation() {
     // Make sure people are random but equal numbers for each party
     const peoplePerParty = Math.ceil(GRID_WIDTH ** 2 / 2);
     let parties = filledArray(BLUE, peoplePerParty).concat(filledArray(RED, peoplePerParty));
-    parties = shuffle(parties);
+    parties = shuffled(parties);
     let districtId = 0;
     for (let gridY = 0; gridY < GRID_WIDTH; gridY++) {
         let row = [];

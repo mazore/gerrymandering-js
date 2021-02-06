@@ -1,8 +1,5 @@
 /*
 TODO:
-- move running and SwapManager into Simulation
-- abstract pie chart drawing into draw functions
-- test not using in place shuffle
 - finish district pie chart
 - add population pie chart
 - when all red districts are high margin, pick one to try to flip
@@ -12,48 +9,44 @@ TODO:
 - experiment with trying to keep big districts more cohesive/clumped/less strung out
 */
 
-var simulation;
-var swapManager;
-var running = false;
+let simulation;
 
 window.onload = function() {
 	defineParameters();
 
 	simulation = new Simulation();
-	simulation.draw();
-	swapManager = new SwapManager();
 
 	// speedTest(); // Most recent about 24.028
 	// scoreTest(); // Most recent about 29.085
 
-	draw();
+	update();
 }
 
-function draw() {
+function update() {
 	simulation.draw();
-	if (running) {
-		frameStart = window.performance.now();
-
+	if (simulation.running) {
+		const frameStart = window.performance.now();
 
 		for (var swapsDone = 0; true; swapsDone++) {
-			swapManager.swap();
+			simulation.swapManager.swap();
 			if (window.performance.now() - frameStart > 1000/30) {
-				break;
+				break; // If time for frame is up
 			}
 		}
 		// console.log(`${swapsDone} swaps done this frame`)
 	}
-	requestAnimationFrame(draw);
+
+	requestAnimationFrame(update);
 }
 
 addEventListener('mousedown', function(event) {
 	if (event.button == 0) { // Left click
-		running = !running;
+		simulation.running = !simulation.running;
 	}
 });
 
 addEventListener('contextmenu', function(event) { // Right click
 	event.preventDefault();
-	swapManager.swap();
+	simulation.swapManager.swap();
 	simulation.draw();
 });

@@ -28,21 +28,14 @@ Array.prototype.group = function(f){
     return r
 }
 
-function shuffle(arr, bool) {
-    var isView = ArrayBuffer && ArrayBuffer.isView && ArrayBuffer.isView(arr);
-    arr = bool || isView ? arr : arr.slice();
-
-    var rnd,
-        tmp,
-        idx = arr.length;
+/** Shuffle and return the given array, from https://github.com/processing/p5.js/blob/main/src/utilities/array_functions.js#L209 */
+function shuffled(arr) {
+    let idx = arr.length;
     while (idx > 1) {
-        rnd = (Math.random(0, 1) * idx) | 0;
-
-        tmp = arr[--idx];
-        arr[idx] = arr[rnd];
-        arr[rnd] = tmp;
+        const rnd = (Math.random(0, 1) * idx) | 0;
+        idx--;
+        [arr[idx], arr[rnd]] = [arr[rnd], arr[idx]];
     }
-
     return arr;
 }
 
