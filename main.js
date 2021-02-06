@@ -1,6 +1,5 @@
 /*
 TODO:
-- implement percentageRed
 - when all red districts are high margin, pick one to try to flip
 - speed up simulation drawing
 - add interface/ui

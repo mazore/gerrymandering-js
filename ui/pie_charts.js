@@ -20,8 +20,7 @@ function PieCharts() {
         const partyNumbers = simulation.getPartyNumbers();
 
         rect(this.ctx, 0, 0, 200, 200, "#ffffff") // Clear background
-        circle(this.ctx, 100, 120, 75, TIE.color2);
-        text(this.ctx, 'Population', 100, 25, color='black', size=15);
+        text(this.ctx, 'Population', 100, 25, color='#000', size=15);
         this.drawPieSlice(BLUE, 100, partyNumbers, GRID_WIDTH**2);
         this.drawPieSlice(RED, 100, partyNumbers, GRID_WIDTH**2);
     }
@@ -31,7 +30,7 @@ function PieCharts() {
 
         rect(this.ctx, 200, 0, 200, 200, "#ffffff") // Clear background
         circle(this.ctx, 300, 120, 75, TIE.color2);
-        text(this.ctx, 'Districts', 300, 25, color='black', size=15);
+        text(this.ctx, 'Districts', 300, 25, color='#000', size=15);
         this.drawPieSlice(BLUE, 300, score, NUM_DISTRICTS);
         this.drawPieSlice(RED, 300, score, NUM_DISTRICTS);
     }

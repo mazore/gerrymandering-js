@@ -16,9 +16,11 @@ function Simulation() {
     // Generate people
     this.peopleGrid = []; // 2D array of Person objects
     // Make sure people are random but equal numbers for each party
-    const peoplePerParty = Math.ceil(GRID_WIDTH ** 2 / 2);
-    let parties = filledArray(BLUE, peoplePerParty).concat(filledArray(RED, peoplePerParty));
-    parties = shuffled(parties);
+    const peopleCount = GRID_WIDTH ** 2
+    const redCount = Math.round(PERCENT_RED / 100 * peopleCount)
+    const blueCount = peopleCount - redCount;
+    let parties = filledArray(BLUE, blueCount).concat(filledArray(RED, redCount));
+    parties = shuffled(parties)
     let districtId = 0;
     for (let gridY = 0; gridY < GRID_WIDTH; gridY++) {
         let row = [];

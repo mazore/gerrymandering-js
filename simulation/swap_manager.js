@@ -87,7 +87,7 @@ function SwapManager() {
             districtWeightMap.set(district, district.getDistrict1Weight());
         }
         while (true) {
-            choice = weightedChoice([...districtWeightMap.entries()]);
+            const choice = weightedChoice([...districtWeightMap.entries()]);
             yield choice;
             delete districtWeightMap.choice;
         }

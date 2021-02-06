@@ -1,9 +1,10 @@
 function defineParameters() {
     SIMULATION_WIDTH = 480; // Width and height of simulation in pixels
     DISTRICT_SIZE = 16; // Number of people per district
+    GRID_WIDTH = 24; // Width and height of grid of people
     HELP_PARTY = BLUE; // Party to help in the gerrymandering process
     FAVOR_TIE = false; // Whether or not to try to make more tied districts
-    GRID_WIDTH = 24; // Width and height of grid of people
+    PERCENT_RED = 50; // What percent of people vote red
 
     HINDER_PARTY = HELP_PARTY.equalTo(RED) ? BLUE : RED; // Party to hinder in the gerrymandering process
     NUM_DISTRICTS = (GRID_WIDTH ** 2) / DISTRICT_SIZE; // Number of districts

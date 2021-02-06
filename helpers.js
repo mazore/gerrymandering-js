@@ -1,3 +1,8 @@
+/** Returns a random item from `arr` */
+function choice(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
 /** Returns the number of times `value` appears in the array */
 Array.prototype.count = function(value) {
     return this.reduce((a, v) => (v === value ? a + 1 : a), 0)
