@@ -6,7 +6,7 @@ function Simulation() {
     this.canvas = document.getElementById('simulation');
     this.ctx = this.canvas.getContext('2d');
 
-    // Fix blurryness
+    // Fix blurriness
     this.canvas.width = SIMULATION_WIDTH*2;
     this.canvas.height = SIMULATION_WIDTH*2;
     this.canvas.style.width = SIMULATION_WIDTH + 'px';
@@ -52,6 +52,21 @@ function Simulation() {
         }
     }
 
+    this.update = function() {
+        this.draw();
+        if (this.running) {
+            const frameStart = window.performance.now();
+
+            for (var swapsDone = 0; true; swapsDone++) {
+                this.swapManager.swap();
+                if (window.performance.now() - frameStart > 1000/30) {
+                    break; // If time for frame is up
+                }
+            }
+            // console.log(`${swapsDone} swaps done this frame`)
+        }
+    }
+
     this.draw = function() {
         rect(this.ctx, 0, 0, SIMULATION_WIDTH, SIMULATION_WIDTH, '#ffffff')
         for (const district of this.districts) {
@@ -62,18 +77,41 @@ function Simulation() {
                 person.draw();
             }
         }
-        updatePieCharts();
+    }
+
+    addEventListener('mousedown', function(event) {
+        if (event.button == 0) { // Left click
+            simulation.running = !simulation.running;
+        }
+    });
+
+    addEventListener('contextmenu', function(event) { // Right click
+        event.preventDefault();
+        simulation.swapManager.swap();
+        simulation.draw();
+    });
+
+    this.getPartyNumbers = function() {
+        map = new Map();
+        map.set(BLUE, 0);
+        map.set(RED, 0);
+        for (const row of this.peopleGrid) {
+            for (const person of row) {
+                map.set(person.party, map.get(person.party) + 1)
+            }
+        }
+        return map;
     }
 
     this.getScore = function() {
-        m = new Map();
-        m.set(BLUE, 0);
-        m.set(RED, 0);
-        m.set(TIE, 0);
+        map = new Map();
+        map.set(BLUE, 0);
+        map.set(RED, 0);
+        map.set(TIE, 0);
         for (const district of this.districts) {
             const winner = district.getWinner();
-            m.set(winner, m.get(winner) + 1);
+            map.set(winner, map.get(winner) + 1);
         }
-        return m;
+        return map;
     }
 }

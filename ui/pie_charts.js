@@ -1,28 +1,53 @@
-function updatePieCharts() {
-    const score = simulation.getScore();
+function PieCharts() {
+    this.canvas = document.getElementById('piechart');
+    this.ctx = this.canvas.getContext('2d');
 
-    const canvas = document.getElementById('piechart');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 400;
-    canvas.height = 400;
-    canvas.style.width = "200px";
-    canvas.style.height = "200px";
-    ctx.scale(2, 2);
+    // Fix blurriness
+    this.canvas.width = 800;
+    this.canvas.height = 400;
+    this.canvas.style.width = this.canvas.width/2 + "px";
+    this.canvas.style.height = this.canvas.height/2 + "px";
+    this.ctx.scale(2, 2);
 
-    circle(ctx, 100, 100, 75, TIE.color2)
+    this.update = function(newGrid) {
+        if (newGrid) {
+            this.updatePopulationPieChart();
+        }
+        this.updateDistrictPieChart();
+    }
 
-    drawPieSlice(ctx, score, BLUE, -1);
-    drawPieSlice(ctx, score, RED, 1);
-}
+    this.updatePopulationPieChart = function() {
+        const partyNumbers = simulation.getPartyNumbers();
 
-function drawPieSlice(ctx, score, party, num) {
-    const start = -Math.PI/2
-    const span = Math.PI*2 * (score.get(party)/NUM_DISTRICTS);
-    const end = start + span*num;
-    arc(ctx, 100, 100, 75, start, end, num > 0, party.color1);
+        rect(this.ctx, 0, 0, 200, 200, "#ffffff") // Clear background
+        circle(this.ctx, 100, 120, 75, TIE.color2);
+        text(this.ctx, 'Population', 100, 25, color='black', size=15);
+        this.drawPieSlice(BLUE, 100, partyNumbers, GRID_WIDTH**2);
+        this.drawPieSlice(RED, 100, partyNumbers, GRID_WIDTH**2);
+    }
 
-    const mid = (start + end) / 2;
-    const x = 100 + Math.cos(mid) * (75 * 0.5);
-    const y = 100 + Math.sin(mid) * (75 * 0.5);
-    text(ctx, score.get(party), x, y)
+    this.updateDistrictPieChart = function() {
+        const score = simulation.getScore();
+
+        rect(this.ctx, 200, 0, 200, 200, "#ffffff") // Clear background
+        circle(this.ctx, 300, 120, 75, TIE.color2);
+        text(this.ctx, 'Districts', 300, 25, color='black', size=15);
+        this.drawPieSlice(BLUE, 300, score, NUM_DISTRICTS);
+        this.drawPieSlice(RED, 300, score, NUM_DISTRICTS);
+    }
+
+    this.drawPieSlice = function(party, centerX, map, quantity) {
+        const factor = party.equalTo(RED) ? 1 : -1
+        const start = -Math.PI/2
+        const span = Math.PI*2 * (map.get(party) / quantity);
+        const end = start + span*factor;
+        arc(this.ctx, centerX, 120, 75, start, end, party.equalTo(RED), party.color1);
+
+        const mid = (start + end) / 2;
+        const x = centerX + Math.cos(mid) * (75 * 0.5);
+        const y = 120 + Math.sin(mid) * (75 * 0.5);
+        text(this.ctx, map.get(party), x, y)
+    }
+
+    this.update(true);
 }
