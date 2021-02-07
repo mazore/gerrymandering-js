@@ -17,10 +17,11 @@ function Simulation() {
     this.peopleGrid = []; // 2D array of Person objects
     // Make sure people are random but equal numbers for each party
     const peopleCount = GRID_WIDTH ** 2
-    const redCount = Math.round(PERCENT_RED / 100 * peopleCount)
-    const blueCount = peopleCount - redCount;
+    const blueCount = Math.round(PERCENT_BLUE / 100 * peopleCount)
+    const redCount = peopleCount - blueCount;
     let parties = filledArray(BLUE, blueCount).concat(filledArray(RED, redCount));
     parties = shuffled(parties)
+    // Index flat array parties to get the party of a person
     let districtId = 0;
     for (let gridY = 0; gridY < GRID_WIDTH; gridY++) {
         let row = [];
@@ -70,7 +71,6 @@ function Simulation() {
     }
 
     this.draw = function() {
-        rect(this.ctx, 0, 0, SIMULATION_WIDTH, SIMULATION_WIDTH, '#ffffff')
         for (const district of this.districts) {
             district.draw()
         }

@@ -4,7 +4,8 @@ function defineParameters() {
     GRID_WIDTH = 24; // Width and height of grid of people
     HELP_PARTY = BLUE; // Party to help in the gerrymandering process
     FAVOR_TIE = false; // Whether or not to try to make more tied districts
-    PERCENT_RED = 50; // What percent of people vote red
+    PERCENT_BLUE = 50; // What percent of people vote blue
+    SHOW_MARGINS = false; // Whether or not to change saturation of district colors based on how much i's won by
 
     HINDER_PARTY = HELP_PARTY.equalTo(RED) ? BLUE : RED; // Party to hinder in the gerrymandering process
     NUM_DISTRICTS = (GRID_WIDTH ** 2) / DISTRICT_SIZE; // Number of districts

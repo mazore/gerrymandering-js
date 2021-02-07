@@ -1,8 +1,13 @@
 /*
 TODO:
+- use a percentage to set people's parties, change threshold to change PERCENTAGE_BLUE
+- drag pie charts to change PERCENTAGE_BLUE
+- drag districts pie charts to control HELP_PARTY, HINDER_PARTY, and FAVOR_TIE
+- add interface/ui
+	- parameter adjusters
+	- control panel
 - when all red districts are high margin, pick one to try to flip
 - speed up simulation drawing
-- add interface/ui
 - district hover information
 - experiment with trying to keep big districts more cohesive/clumped/less strung out
 */

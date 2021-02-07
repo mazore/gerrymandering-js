@@ -1,5 +1,5 @@
 function PieCharts() {
-    this.canvas = document.getElementById('piechart');
+    this.canvas = document.getElementById('piecharts');
     this.ctx = this.canvas.getContext('2d');
 
     // Fix blurriness
@@ -42,10 +42,12 @@ function PieCharts() {
         const end = start + span*factor;
         arc(this.ctx, centerX, 120, 75, start, end, party.equalTo(RED), party.color1);
 
-        const mid = (start + end) / 2;
-        const x = centerX + Math.cos(mid) * (75 * 0.5);
-        const y = 120 + Math.sin(mid) * (75 * 0.5);
-        text(this.ctx, map.get(party), x, y)
+        if (span != 0) {
+            const mid = (start + end) / 2;
+            const x = centerX + Math.cos(mid) * (75 * 0.5);
+            const y = 120 + Math.sin(mid) * (75 * 0.5);
+            text(this.ctx, map.get(party), x, y)
+        }
     }
 
     this.update(true);

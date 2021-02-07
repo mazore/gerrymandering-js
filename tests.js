@@ -5,7 +5,7 @@ function speedTest() {
 		simulation = new Simulation();
 		swapManager = new SwapManager();
 
-		t = window.performance.now();
+		const t = window.performance.now();
 		for (let i = 0; i < 1000; i++) {
 			swapManager.swap();
 		}

@@ -24,7 +24,11 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
 
     this.draw = function() {
         // Translucent fill
-        const color = this.getWinner().color2;
+        let color = this.getWinner().color2;
+        if (SHOW_MARGINS) {
+            factor = Math.abs(this.netAdvantage) / DISTRICT_SIZE * 1.5;
+            color = lighten(color, 0.75-factor);
+        }
         for (const person of this.people) {
             rect(simulation.ctx, person.x, person.y, SQUARE_WIDTH, SQUARE_WIDTH, color);
         }
