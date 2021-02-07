@@ -10,7 +10,7 @@ function defineParameters() {
     HINDER_PARTY = HELP_PARTY.equalTo(RED) ? BLUE : RED; // Party to hinder in the gerrymandering process
     NUM_PEOPLE = GRID_WIDTH ** 2 // Number of people
     NUM_DISTRICTS = NUM_PEOPLE / DISTRICT_SIZE; // Number of districts
-    STANCE_THRESHOLD = Math.floor(NUM_PEOPLE*PERCENT_BLUE/100 - 0.5) // Where to divide people's stances
+    STANCE_THRESHOLD = Math.floor(NUM_PEOPLE*PERCENT_BLUE/100 - 0.5); // Where to divide people's stances
     SQUARE_WIDTH = SIMULATION_WIDTH / GRID_WIDTH; // Width of a person square
 
     if (!Number.isInteger(Math.sqrt(DISTRICT_SIZE))) {

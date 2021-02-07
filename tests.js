@@ -10,6 +10,7 @@ function speedTest() {
 			swapManager.swap();
 		}
 		simulation.draw();
+		pieCharts.update();
 		timeSum += window.performance.now() - t;
 
 		if (i % 100 == 0) {

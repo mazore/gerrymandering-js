@@ -18,6 +18,18 @@ Array.prototype.containsObject = function(obj) {
     return false;
 }
 
+/**
+ * Returns the distance between points, use lessThan or greaterThan for comparisons to
+ * avoid using costly square root function
+ */
+function distance(x1, y1, x2, y2, lessThan=null, greaterThan=null) {
+    if (lessThan != null)
+        return ((x2 - x1) ** 2 + (y2 - y1) ** 2) < lessThan ** 2
+    if (greaterThan != null)
+        return ((x2 - x1) ** 2 + (y2 - y1) ** 2) > greaterThan ** 2
+    return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+}
+
 /** Returns an array of `length` with values of `value` */
 function filledArray(value, length) {
     return Array(length).fill(value)

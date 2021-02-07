@@ -46,7 +46,12 @@ function Person(simulation, id, gridX, gridY, stance) {
     }
 
     this.setParty = function() {
+        const before = this.party;
         this.party = this.stance > STANCE_THRESHOLD ? RED : BLUE;
+        if (typeof before != 'undefined' && !this.party.equalTo(before)) {
+            this.district.netAdvantage -= before.equalTo(HELP_PARTY) ? 1 : -1;
+            this.district.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
+        }
     }
 
     /** Returns a list of districts neighboring this person, not including the district this is in */

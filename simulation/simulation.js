@@ -79,19 +79,20 @@ function Simulation() {
         }
     }
 
-    addEventListener('mousedown', function(event) {
+    this.canvas.addEventListener('mousedown', function(event) {
         if (event.button == 0) { // Left click
             simulation.running = !simulation.running;
         }
     });
 
-    addEventListener('contextmenu', function(event) { // Right click
+    this.canvas.addEventListener('contextmenu', function(event) { // Right click
         event.preventDefault();
         simulation.swapManager.swap();
         simulation.draw();
     });
 
-    this.getPartyNumbers = function() {
+    /** Returns how many people each party has */
+    this.getDemographics = function() {
         map = new Map();
         map.set(BLUE, 0);
         map.set(RED, 0);
@@ -101,6 +102,7 @@ function Simulation() {
         return map;
     }
 
+    /** Returns how many district each party has won */
     this.getScore = function() {
         map = new Map();
         map.set(BLUE, 0);
