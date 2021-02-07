@@ -18,7 +18,6 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
 
             this.people.push(person);
             person.district = this;
-            this.netAdvantage += person.party.equalTo(HELP_PARTY) ? 1 : -1;
         }
     }
 
@@ -41,8 +40,7 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
         const edgeOccurrenceMap = new Map();
         for (const person of this.people) {
             for (const edge of person.getEdges()) {
-                let occurrence = edgeOccurrenceMap.get(edge) ?? 0;
-                edgeOccurrenceMap.set(edge, occurrence + 1);
+                edgeOccurrenceMap.increment(edge);
             }
         }
         // Draw outline

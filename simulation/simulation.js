@@ -1,6 +1,5 @@
 /** Manages people, districts, and swapping */
 function Simulation() {
-    this.running = false;
 	this.swapManager = new SwapManager();
 
     this.canvas = document.getElementById('simulation');
@@ -12,6 +11,8 @@ function Simulation() {
     this.canvas.style.width = SIMULATION_WIDTH + 'px';
     this.canvas.style.height = SIMULATION_WIDTH + 'px';
     this.ctx.scale(2, 2);
+
+    this.demographics = new Map([[BLUE, 0], [RED, 0]]);
 
     this.generatePeople = function() {
         this.peopleGrid = []; // 2D array of Person objects
@@ -30,10 +31,6 @@ function Simulation() {
                 personId++;
             }
             this.peopleGrid.push(row);
-        }
-        for (const person of this.iterPeople()) {
-            person.secondaryInit();
-            person.setParty();
         }
     }
 
@@ -56,18 +53,17 @@ function Simulation() {
     }
 
     this.update = function() {
-        this.draw();
-        if (this.running) {
-            const frameStart = window.performance.now();
+        const frameStart = window.performance.now();
 
-            for (var swapsDone = 0; true; swapsDone++) {
-                this.swapManager.swap();
-                if (window.performance.now() - frameStart > 1000/30) {
-                    break; // If time for frame is up
-                }
+        this.draw();
+
+        for (var swapsDone = 0; true; swapsDone++) {
+            this.swapManager.swap();
+            if (window.performance.now() - frameStart > 1000/30) {
+                break; // If time for frame is up
             }
-            // console.log(`${swapsDone} swaps done this frame`)
         }
+        // console.log(`${swapsDone} swaps done this frame`)
     }
 
     this.draw = function() {
@@ -79,11 +75,7 @@ function Simulation() {
         }
     }
 
-    this.canvas.addEventListener('mousedown', function(event) {
-        if (event.button == 0) { // Left click
-            simulation.running = !simulation.running;
-        }
-    });
+	this.canvas.addEventListener('mousedown', simulationMouseDown);
 
     this.canvas.addEventListener('contextmenu', function(event) { // Right click
         event.preventDefault();
@@ -91,26 +83,12 @@ function Simulation() {
         simulation.draw();
     });
 
-    /** Returns how many people each party has */
-    this.getDemographics = function() {
-        map = new Map();
-        map.set(BLUE, 0);
-        map.set(RED, 0);
-        for (const person of this.iterPeople()) {
-            map.set(person.party, map.get(person.party) + 1)
-        }
-        return map;
-    }
-
     /** Returns how many district each party has won */
     this.getScore = function() {
-        map = new Map();
-        map.set(BLUE, 0);
-        map.set(RED, 0);
-        map.set(TIE, 0);
+        map = new Map([[BLUE, 0], [RED, 0], [TIE, 0]]);
         for (const district of this.districts) {
             const winner = district.getWinner();
-            map.set(winner, map.get(winner) + 1);
+            map.increment(winner);
         }
         return map;
     }
@@ -125,4 +103,8 @@ function Simulation() {
 
     this.generatePeople();
     this.generateDistricts();
+    for (const person of this.iterPeople()) {
+        person.secondaryInit();
+    }
+    this.draw();
 }

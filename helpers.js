@@ -59,6 +59,11 @@ function lighten(str, percent) {
     return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
 }
 
+/** Increments the value at the given key by `amount` */
+Map.prototype.increment = function(key, amount=1) {
+    this.set(key, (this.get(key) ?? 0) + amount);
+}
+
 /** Shuffle and return the given array, from https://github.com/processing/p5.js/blob/main/src/utilities/array_functions.js#L209 */
 function shuffled(arr) {
     let idx = arr.length;

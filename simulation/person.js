@@ -11,7 +11,7 @@ function Person(simulation, id, gridX, gridY, stance) {
     this.atEast = this.gridX == GRID_WIDTH - 1;
     this.atSouth = this.gridY == GRID_WIDTH - 1;
 
-    /** Called after all people are initialized */
+    /** Called after all people and districts are initialized */
     this.secondaryInit = function() {
         if (!this.atWest)
             this.personWest = simulation.peopleGrid[this.gridY][this.gridX - 1];
@@ -37,6 +37,8 @@ function Person(simulation, id, gridX, gridY, stance) {
         /** surroundingPeople - always length 8, includes all people in surrounding 8 squares, undefined if no person */
         this.surroundingPeople = [this.personNorth, this.personNE, this.personEast, this.personSE,
                                   this.personSouth, this.personSW, this.personWest, this.personNW];
+
+        this.setParty();
     }
 
     this.draw = function() {
@@ -48,9 +50,16 @@ function Person(simulation, id, gridX, gridY, stance) {
     this.setParty = function() {
         const before = this.party;
         this.party = this.stance > STANCE_THRESHOLD ? RED : BLUE;
-        if (typeof before != 'undefined' && !this.party.equalTo(before)) {
+        if (typeof before == 'undefined') { // For init
+            this.district.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
+            simulation.demographics.increment(this.party);
+            return;
+        }
+        if (!this.party.equalTo(before)) {
             this.district.netAdvantage -= before.equalTo(HELP_PARTY) ? 1 : -1;
             this.district.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
+            simulation.demographics.increment(before, -1);
+            simulation.demographics.increment(this.party);
         }
     }
 
