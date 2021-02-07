@@ -23,6 +23,11 @@ function filledArray(value, length) {
     return Array(length).fill(value)
 }
 
+/** Returns r, g, and b channels (strings) from 'rgb(r, g, b)' string */
+function getRGB(str) {
+    return str.match(/\d+/g);
+}
+
 /** Groups same values, from https://codegolf.stackexchange.com/a/173976 */
 Array.prototype.group = function(f){
     const r = []
@@ -31,6 +36,15 @@ Array.prototype.group = function(f){
         k !== (k = f ? f(i) : i) ? r.push(a = [i]) : a.push(i);
     }
     return r
+}
+
+/** Returns 'rgb(r, g, b)' string that is `percent` percent towards white, 1 being white, 0 being no change */
+function lighten(str, percent) {
+    let [r, g, b] = getRGB(str);
+    r = parseInt(r) + (255 - r)*percent;
+    g = parseInt(g) + (255 - g)*percent;
+    b = parseInt(b) + (255 - b)*percent;
+    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
 }
 
 /** Shuffle and return the given array, from https://github.com/processing/p5.js/blob/main/src/utilities/array_functions.js#L209 */

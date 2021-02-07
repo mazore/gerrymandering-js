@@ -1,7 +1,7 @@
 /*
 TODO:
-- use a percentage to set people's parties, change threshold to change PERCENTAGE_BLUE
 - drag pie charts to change PERCENTAGE_BLUE
+- add percent to pie charts
 - drag districts pie charts to control HELP_PARTY, HINDER_PARTY, and FAVOR_TIE
 - add interface/ui
 	- parameter adjusters

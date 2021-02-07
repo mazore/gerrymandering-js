@@ -1,9 +1,9 @@
 /** Represents one person, who gets one vote for one party. District lines are drawn around these people */
-function Person(simulation, id, gridX, gridY, party) {
+function Person(simulation, id, gridX, gridY, stance) {
     this.id = id;
     [this.gridX, this.gridY] = [gridX, gridY];
     [this.x, this.y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH]; // In pixel coordinates
-    this.party = party;
+    this.stance = stance; // The placement of this person on the political spectrum
     this.district = null; // Defined in District
 
     this.atWest = this.gridX == 0;
@@ -42,7 +42,11 @@ function Person(simulation, id, gridX, gridY, party) {
     this.draw = function() {
         const w = SQUARE_WIDTH * 0.175;
         const offset = SQUARE_WIDTH/2 - w;
-        rect(simulation.ctx, this.x + offset, this.y + offset, w*2, w*2, party.color1);
+        rect(simulation.ctx, this.x + offset, this.y + offset, w*2, w*2, this.party.color1);
+    }
+
+    this.setParty = function() {
+        this.party = this.stance > STANCE_THRESHOLD ? RED : BLUE;
     }
 
     /** Returns a list of districts neighboring this person, not including the district this is in */
