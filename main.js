@@ -1,55 +1,33 @@
-/*
-TODO:
-- use modules
-- stop using for of
-- async swapping
-- add percent to pie charts
-- drag districts pie charts to control HELP_PARTY, HINDER_PARTY, and FAVOR_TIE
-    - start with odd grid so don't have to deal with ties
-- refactor pie charts (2 pie chart classes w/ prototype?, 2 instances?)
-- change getScore (in Simulation) to score Map for optimization
-    - change score Map when a person swaps districts
-    - only call drawDistrictsPieChart() when a district is flipped
-- add interface/ui
-    - parameter adjusters
-    - control panel
-- when all red districts are high margin, pick one to try to flip
-- district hover information
-- speed up simulation drawing
-- experiment with trying to keep big districts more cohesive/clumped/less strung out
-*/
+import PieCharts from './ui/pie_charts.js';
+import Simulation from './simulation/simulation.js';
+// import { speedTest, scoreTest } from './tests.js';
 
-let requestId = null;
-let simulation;
-let pieCharts;
+function Main() {
+    this.update = () => {
+        this.simulation.update();
 
-addEventListener('load', () => {
-    defineParameters();
+        this.pieCharts.drawDistrictsPieChart();
 
-    simulation = new Simulation();
+        this.requestId = requestAnimationFrame(this.update);
+    };
 
-    pieCharts = new PieCharts();
-
-    // speedTest(); // Most recent about 24.028
-    // scoreTest(); // Most recent about 29.085
-});
-
-function update() {
-    simulation.update();
-
-    pieCharts.drawDistrictsPieChart();
-
-    requestId = requestAnimationFrame(update);
-}
-
-function simulationMouseDown(event) {
-    if (event.button === 0) { // Left click
-        if (requestId == null) { // Start running
-            requestId = requestAnimationFrame(update);
-        } else { // Stop running
-            cancelAnimationFrame(requestId);
-            requestId = null;
-            simulation.draw(); // Because it swaps after drawing every update
+    this.mouseDown = (event) => {
+        if (event.button === 0) { // Left click
+            if (this.requestId == null) { // Start running
+                this.requestId = requestAnimationFrame(this.update);
+            } else { // Stop running
+                cancelAnimationFrame(this.requestId);
+                this.requestId = null;
+                this.simulation.draw(); // Because it swaps after drawing every update
+            }
         }
-    }
+    };
+
+    this.requestId = null;
+    this.simulation = new Simulation(this);
+    this.pieCharts = new PieCharts(this);
 }
+
+new Main();
+// speedTest(Main);
+// scoreTest(Main);

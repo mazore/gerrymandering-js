@@ -1,5 +1,5 @@
 /** Returns a random item from `arr` */
-function choice(arr) {
+export function choice(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
@@ -22,7 +22,7 @@ Array.prototype.containsObject = function containsObject(obj) {
  * Returns the distance between points, use lessThan or greaterThan for comparisons to
  * avoid using costly square root function
  */
-function distance(x1, y1, x2, y2, lessThan = null, greaterThan = null) {
+export function distance(x1, y1, x2, y2, lessThan = null, greaterThan = null) {
     if (lessThan != null) {
         return ((x2 - x1) ** 2 + (y2 - y1) ** 2) < lessThan ** 2;
     }
@@ -33,18 +33,19 @@ function distance(x1, y1, x2, y2, lessThan = null, greaterThan = null) {
 }
 
 /** Returns an array of `length` with values of `value` */
-function filledArray(value, length) {
+export function filledArray(value, length) {
     return Array(length).fill(value);
 }
 
 /** Returns r, g, and b channels (strings) from 'rgb(r, g, b)' string */
-function getRGB(str) {
+export function getRGB(str) {
     return str.match(/\d+/g);
 }
 
 /** Groups same values, from https://codegolf.stackexchange.com/a/173976 */
 Array.prototype.group = function group(f) {
     // This is code golf code
+    let a;
     const r = [];
     let k = r;
     for (const i of this) {
@@ -58,7 +59,7 @@ Array.prototype.group = function group(f) {
  * Returns 'rgb(r, g, b)' string that is `percent` percent towards white, 1 being white, 0 being no
  * change
  * */
-function lighten(str, percent) {
+export function lighten(str, percent) {
     let [r, g, b] = getRGB(str);
     r = parseInt(r, 10) + (255 - r) * percent;
     g = parseInt(g, 10) + (255 - g) * percent;
@@ -72,7 +73,7 @@ Map.prototype.increment = function increment(key, amount = 1) {
 };
 
 /** Shuffle and return the given array, from https://github.com/processing/p5.js/blob/main/src/utilities/array_functions.js#L209 */
-function shuffled(original) {
+export function shuffled(original) {
     const arr = [...original];
     let idx = arr.length;
     while (idx > 1) {
@@ -84,7 +85,7 @@ function shuffled(original) {
 }
 
 /** Pass in a list of [(item, weight), ...], from https://blobfolio.com/2019/randomizing-weighted-choices-in-javascript */
-function weightedChoice(data) {
+export function weightedChoice(data) {
     let total = 0;
     for (let i = 0; i < data.length; i += 1) {
         total += data[i][1];

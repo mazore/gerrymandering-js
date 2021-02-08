@@ -1,4 +1,11 @@
-function PieCharts() {
+import {
+    arc, circle, rect, text,
+} from '../drawing.js';
+import { distance } from '../helpers.js';
+import ps from '../parameters.js';
+import { BLUE, RED, TIE } from '../simulation/parties.js';
+
+export default function PieCharts(main) {
     const POPULATION_X = 100;
     const DISTRICTS_X = 300;
     const CENTER_Y = 115;
@@ -22,19 +29,19 @@ function PieCharts() {
     this.drawPopulationPieChart = () => {
         rect(this.ctx, 0, 0, WIDTH / 2, HEIGHT, '#ffffff'); // Clear background
         text(this.ctx, 'Population', POPULATION_X, 25, '#000', 15);
-        this.drawPieSlice(BLUE, POPULATION_X, simulation.demographics, GRID_WIDTH ** 2);
-        this.drawPieSlice(RED, POPULATION_X, simulation.demographics, GRID_WIDTH ** 2);
+        this.drawPieSlice(BLUE, POPULATION_X, main.simulation.demographics, ps.NUM_PEOPLE);
+        this.drawPieSlice(RED, POPULATION_X, main.simulation.demographics, ps.NUM_PEOPLE);
         circle(this.ctx, ...this.getPopulationDragPoint(), 5, '#ffff88', true);
     };
 
     this.drawDistrictsPieChart = () => {
-        const score = simulation.getScore();
+        const score = main.simulation.getScore();
 
         rect(this.ctx, WIDTH / 2, 0, WIDTH / 2, HEIGHT, '#ffffff'); // Clear background
         circle(this.ctx, DISTRICTS_X, CENTER_Y, RADIUS, TIE.color2);
         text(this.ctx, 'Districts', DISTRICTS_X, 25, '#000', 15);
-        this.drawPieSlice(BLUE, DISTRICTS_X, score, NUM_DISTRICTS);
-        this.drawPieSlice(RED, DISTRICTS_X, score, NUM_DISTRICTS);
+        this.drawPieSlice(BLUE, DISTRICTS_X, score, ps.NUM_DISTRICTS);
+        this.drawPieSlice(RED, DISTRICTS_X, score, ps.NUM_DISTRICTS);
     };
 
     this.drawPieSlice = (party, centerX, map, quantity) => {
@@ -52,21 +59,21 @@ function PieCharts() {
         }
     };
 
-    addEventListener('mousemove', (event) => {
+    window.addEventListener('mousemove', (event) => {
         if (this.populationDragging) {
             let angle = Math.atan2(event.x - POPULATION_X, CENTER_Y + TOP - event.y);
             if (angle < 0) { angle += Math.PI * 2; } // Ensure positive 0 to 2pi
             const percent = angle / (Math.PI * 2);
 
-            PERCENT_BLUE = 100 * (1 - percent);
-            STANCE_THRESHOLD = Math.floor(NUM_PEOPLE * (PERCENT_BLUE / 100) - 0.5);
-            for (const person of simulation.iterPeople()) {
+            ps.PERCENT_BLUE = 100 * (1 - percent);
+            ps.STANCE_THRESHOLD = Math.floor(ps.NUM_PEOPLE * (ps.PERCENT_BLUE / 100) - 0.5);
+            for (const person of main.simulation.iterPeople()) {
                 person.setParty();
             }
 
             this.drawPopulationPieChart();
             this.drawDistrictsPieChart();
-            simulation.draw();
+            main.simulation.draw();
 
             return; // Don't need to update cursor if dragging
         }
@@ -90,7 +97,7 @@ function PieCharts() {
         }
     });
 
-    addEventListener('mouseup', () => {
+    window.addEventListener('mouseup', () => {
         // Stop grabbing
         this.populationDragging = false;
         document.body.style.cursor = 'default';
@@ -98,7 +105,7 @@ function PieCharts() {
 
     /** Returns a point in canvas coords that is a point to drag on the population chart */
     this.getPopulationDragPoint = () => {
-        const percent = (simulation.demographics.get(BLUE) / NUM_PEOPLE);
+        const percent = (main.simulation.demographics.get(BLUE) / ps.NUM_PEOPLE);
         const angle = -Math.PI / 2 + (Math.PI * 2 * percent);
         const x = POPULATION_X - RADIUS * Math.cos(angle);
         const y = CENTER_Y + RADIUS * Math.sin(angle);

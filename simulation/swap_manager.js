@@ -1,5 +1,8 @@
 /** Manages the swapping of two people between districts. See readme for more information */
-function SwapManager() {
+import { shuffled, weightedChoice } from '../helpers.js';
+import ps from '../parameters.js';
+
+export default function SwapManager(simulation) {
     this.swapsDone = 0;
     // person[n] is originally from district[n]
     this.person1 = null;
@@ -43,7 +46,7 @@ function SwapManager() {
     this.getPerson2 = () => {
         for (this.district2 of shuffled(this.person1.getAdjacentDistricts())) {
             const party2CanBeHelpParty = this.party2CanBeHelpParty();
-            const aDistrictTied = FAVOR_TIE ? this.district1.tied || this.district2.tied : null;
+            const aDistrictTied = ps.FAVOR_TIE ? this.district1.tied || this.district2.tied : null;
 
             for (this.person2 of this.getPerson2Choices()) {
                 if (!this.person2.getAdjacentDistricts().containsObject(this.district1)) {
@@ -55,10 +58,11 @@ function SwapManager() {
                 if (!this.person2.getIsRemovable()) {
                     continue; // If removing will cause disconnection in district2
                 }
-                if (FAVOR_TIE && aDistrictTied && !this.person1.party.equalTo(this.person2.party)) {
+                const partiesEqual = this.person1.party.equalTo(this.person2.party);
+                if (ps.FAVOR_TIE && aDistrictTied && !partiesEqual) {
                     continue; // If swapping will cause a district to become not tied
                 }
-                if (!party2CanBeHelpParty && this.person2.party.equalTo(HELP_PARTY)) {
+                if (!party2CanBeHelpParty && this.person2.party.equalTo(ps.HELP_PARTY)) {
                     return 'restart'; // Better than `continue` not sure why
                 }
                 return 'complete';
@@ -69,7 +73,7 @@ function SwapManager() {
 
     /** Used in getPerson2, yields people of opposite parties to person1 first */
     this.getPerson2Choices = function* () {
-        notYielded = [];
+        const notYielded = [];
         for (const person of this.district2.people) {
             if (!person.party.equalTo(this.person1.party)) {
                 yield person;
@@ -85,7 +89,7 @@ function SwapManager() {
     /** Yields district1 choices weighted using getDistrict1Weight */
     this.district1Generator = function* () {
         const districtWeightMap = new Map();
-        for (district of simulation.districts) {
+        for (const district of simulation.districts) {
             districtWeightMap.set(district, district.getDistrict1Weight());
         }
         while (true) {
@@ -97,7 +101,7 @@ function SwapManager() {
 
     /** Returns if person2 can be HELP_PARTY without decreasing HELP_PARTY's total score */
     this.party2CanBeHelpParty = () => {
-        if (!this.person1.party.equalTo(HINDER_PARTY)) {
+        if (!this.person1.party.equalTo(ps.HINDER_PARTY)) {
             return true; // If netAdvantages will stay the same or district2's will increase
         }
         // Now we know that district2 netAdvantage is decreasing by 2 and district1 netAdvantage

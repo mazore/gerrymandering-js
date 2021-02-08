@@ -2,7 +2,13 @@
  * Represents a collection of people, with a line drawn around them. The winner is determined by
  * which party has the most people contained in this district
  */
-function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
+import { line, rect } from '../drawing.js';
+import { lighten } from '../helpers.js';
+import ps from '../parameters.js';
+
+import { TIE } from './parties.js';
+
+export default function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
     this.id = id;
     // gridX1 etc. bound the district square in grid coords
     this.gridX1 = gridX1;
@@ -24,12 +30,12 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
     this.draw = () => {
         // Translucent fill
         let color = this.getWinner().color2;
-        if (SHOW_MARGINS) {
-            factor = (Math.abs(this.netAdvantage) / DISTRICT_SIZE) * 1.5;
+        if (ps.SHOW_MARGINS) {
+            const factor = (Math.abs(this.netAdvantage) / ps.DISTRICT_SIZE) * 1.5;
             color = lighten(color, 0.75 - factor);
         }
         for (const person of this.people) {
-            rect(simulation.ctx, person.x, person.y, SQUARE_WIDTH, SQUARE_WIDTH, color);
+            rect(simulation.ctx, person.x, person.y, ps.SQUARE_WIDTH, ps.SQUARE_WIDTH, color);
         }
 
         // Outline
@@ -48,11 +54,11 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
         for (const [edge, occurrence] of edgeOccurrenceMap) {
             if (occurrence === 1) {
                 const [gridX, gridY, dir] = edge.split(',');
-                const [x, y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH];
+                const [x, y] = [gridX * ps.SQUARE_WIDTH, gridY * ps.SQUARE_WIDTH];
                 if (dir === 'n') {
-                    line(simulation.ctx, x, y, x + SQUARE_WIDTH, y, '#000', 3);
+                    line(simulation.ctx, x, y, x + ps.SQUARE_WIDTH, y, '#000', 3);
                 } else if (dir === 'w') {
-                    line(simulation.ctx, x, y, x, y + SQUARE_WIDTH, '#000', 3);
+                    line(simulation.ctx, x, y, x, y + ps.SQUARE_WIDTH, '#000', 3);
                 }
             }
         }
@@ -62,7 +68,7 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
         if (this.tied) {
             return TIE;
         }
-        return this.netAdvantage > 0 ? HELP_PARTY : HINDER_PARTY;
+        return this.netAdvantage > 0 ? ps.HELP_PARTY : ps.HINDER_PARTY;
     };
 
     Object.defineProperties(this, {
@@ -71,16 +77,16 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
 
     /** Returns which party this district prioritizes swapping to another district (giving away) */
     this.idealGiveAway = () => {
-        if (FAVOR_TIE) {
+        if (ps.FAVOR_TIE) {
             if (this.tied) {
                 return null;
             }
             return this.getWinner();
         }
         if (-4 <= this.netAdvantage && this.netAdvantage <= 2) {
-            return HINDER_PARTY; // If flippable/at risk, try to get more HELP_PARTY people
+            return ps.HINDER_PARTY; // If flippable/at risk, try to get more HELP_PARTY people
         }
-        return HELP_PARTY; // If not flippable or safe HELP_PARTY, share our HELP_PARTY people
+        return ps.HELP_PARTY; // If not flippable or safe HELP_PARTY, share our HELP_PARTY people
     };
 
     /**

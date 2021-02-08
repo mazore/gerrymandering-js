@@ -2,17 +2,22 @@
  * Represents one person, who gets one vote for one party. District lines are drawn around these
  * people
  */
-function Person(simulation, id, gridX, gridY, stance) {
+import { rect } from '../drawing.js';
+import ps from '../parameters.js';
+
+import { BLUE, RED } from './parties.js';
+
+export default function Person(simulation, id, gridX, gridY, stance) {
     this.id = id;
     [this.gridX, this.gridY] = [gridX, gridY];
-    [this.x, this.y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH]; // In pixel coordinates
+    [this.x, this.y] = [gridX * ps.SQUARE_WIDTH, gridY * ps.SQUARE_WIDTH]; // In pixel coordinates
     this.stance = stance; // The placement of this person on the political spectrum
     this.district = null; // Defined in District
 
     this.atWest = this.gridX === 0;
     this.atNorth = this.gridY === 0;
-    this.atEast = this.gridX === GRID_WIDTH - 1;
-    this.atSouth = this.gridY === GRID_WIDTH - 1;
+    this.atEast = this.gridX === ps.GRID_WIDTH - 1;
+    this.atSouth = this.gridY === ps.GRID_WIDTH - 1;
 
     /** Called after all people and districts are initialized */
     this.secondaryInit = () => {
@@ -50,22 +55,22 @@ function Person(simulation, id, gridX, gridY, stance) {
     };
 
     this.draw = () => {
-        const w = SQUARE_WIDTH * 0.175;
-        const offset = SQUARE_WIDTH / 2 - w;
+        const w = ps.SQUARE_WIDTH * 0.175;
+        const offset = ps.SQUARE_WIDTH / 2 - w;
         rect(simulation.ctx, this.x + offset, this.y + offset, w * 2, w * 2, this.party.color1);
     };
 
     this.setParty = () => {
         const before = this.party;
-        this.party = this.stance > STANCE_THRESHOLD ? RED : BLUE;
+        this.party = this.stance > ps.STANCE_THRESHOLD ? RED : BLUE;
         if (typeof before === 'undefined') { // For initialization
-            this.district.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
+            this.district.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
             simulation.demographics.increment(this.party);
             return;
         }
         if (!this.party.equalTo(before)) {
-            this.district.netAdvantage -= before.equalTo(HELP_PARTY) ? 1 : -1;
-            this.district.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
+            this.district.netAdvantage -= before.equalTo(ps.HELP_PARTY) ? 1 : -1;
+            this.district.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
             simulation.demographics.increment(before, -1);
             simulation.demographics.increment(this.party);
         }
@@ -124,9 +129,9 @@ function Person(simulation, id, gridX, gridY, stance) {
     /** Change which district this person belongs to, does not change location or party */
     this.changeDistricts = (destination) => {
         this.district.people.splice(this.district.people.indexOf(this), 1);
-        this.district.netAdvantage -= this.party.equalTo(HELP_PARTY) ? 1 : -1;
+        this.district.netAdvantage -= this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
         destination.people.push(this);
-        destination.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
+        destination.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
         this.district = destination;
     };
 }
