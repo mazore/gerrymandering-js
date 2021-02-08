@@ -1,5 +1,5 @@
 /** Manages the swapping of two people between districts. See readme for more information */
-import { shuffled, weightedChoice } from '../helpers.js';
+import { shuffled, weightedChoice } from '../helpers/functions.js';
 import ps from '../parameters.js';
 
 export default function SwapManager(simulation) {

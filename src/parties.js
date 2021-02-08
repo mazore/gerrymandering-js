@@ -1,4 +1,4 @@
-import { lighten } from '../helpers.js';
+import { lighten } from './helpers/functions.js';
 
 function Party(name, color) {
     this.name = name;

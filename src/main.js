@@ -1,5 +1,5 @@
-import PieCharts from './ui/pie_charts.js';
-import Simulation from './simulation/simulation.js';
+import PieCharts from './pie_charts.js';
+import Simulation from './simulation.js';
 // import { speedTest, scoreTest } from './tests.js';
 
 function Main() {

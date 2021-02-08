@@ -1,10 +1,11 @@
 /** Manages people, districts, and swapping */
-import { shuffled } from '../helpers.js';
-import ps from '../parameters.js';
-import District from './district.js';
+import { shuffled } from './helpers/functions.js';
+import ps from './parameters.js';
 import { BLUE, RED, TIE } from './parties.js';
-import Person from './person.js';
-import SwapManager from './swap_manager.js';
+
+import District from './simulation/district.js';
+import Person from './simulation/person.js';
+import SwapManager from './simulation/swap_manager.js';
 
 export default function Simulation(main) {
     this.swapManager = new SwapManager(this);

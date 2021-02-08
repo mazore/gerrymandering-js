@@ -1,4 +1,4 @@
-import { BLUE, RED } from './simulation/parties.js';
+import { BLUE, RED } from './parties.js';
 
 function Parameters() {
     this.SIMULATION_WIDTH = 480; // Width and height of simulation in pixels */

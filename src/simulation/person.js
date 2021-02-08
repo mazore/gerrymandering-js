@@ -2,10 +2,9 @@
  * Represents one person, who gets one vote for one party. District lines are drawn around these
  * people
  */
-import { rect } from '../drawing.js';
+import { rect } from '../helpers/drawing.js';
 import ps from '../parameters.js';
-
-import { BLUE, RED } from './parties.js';
+import { BLUE, RED } from '../parties.js';
 
 export default function Person(simulation, id, gridX, gridY, stance) {
     this.id = id;

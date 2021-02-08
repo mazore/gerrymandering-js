@@ -2,11 +2,10 @@
  * Represents a collection of people, with a line drawn around them. The winner is determined by
  * which party has the most people contained in this district
  */
-import { line, rect } from '../drawing.js';
-import { lighten } from '../helpers.js';
+import { line, rect } from '../helpers/drawing.js';
+import { lighten } from '../helpers/functions.js';
 import ps from '../parameters.js';
-
-import { TIE } from './parties.js';
+import { TIE } from '../parties.js';
 
 export default function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
     this.id = id;

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { BLUE } from './simulation/parties.js';
+import { BLUE } from './parties.js';
 
 export function speedTest(Main) {
     let timeSum = 0;

@@ -1,9 +1,9 @@
 import {
     arc, circle, rect, text,
-} from '../drawing.js';
-import { distance } from '../helpers.js';
-import ps from '../parameters.js';
-import { BLUE, RED, TIE } from '../simulation/parties.js';
+} from './helpers/drawing.js';
+import { distance } from './helpers/functions.js';
+import ps from './parameters.js';
+import { BLUE, RED, TIE } from './parties.js';
 
 export default function PieCharts(main) {
     const POPULATION_X = 100;
