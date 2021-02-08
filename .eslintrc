@@ -1,0 +1,21 @@
+{
+    "extends": "airbnb-base",
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "rules": {
+        "func-names": ["error", "always", { "generators": "never" }],
+        "indent": ["error", 4],
+        "linebreak-style": 0,
+        "no-continue": 0,
+        "no-param-reassign": ["error", { "props": false }],
+        "yoda": ["error", "never", { "exceptRange": true }],
+        // To fix
+        "no-extend-native": 0, // Should probably fix this
+        "no-restricted-syntax": 0, // Allow for of loops, should stop using them
+        // Temporary until refactor to use modules
+        "no-undef": 0,
+        "no-restricted-globals": 0,
+        "no-unused-vars": 0
+    }
+}

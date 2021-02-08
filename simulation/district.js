@@ -1,6 +1,6 @@
 /**
- * Represents a collection of people, with a line drawn around them. The winner is determined by which party has the
- * most people contained in this district
+ * Represents a collection of people, with a line drawn around them. The winner is determined by
+ * which party has the most people contained in this district
  */
 function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
     this.id = id;
@@ -12,8 +12,8 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
     this.netAdvantage = 0; // num HELP_PARTY people minus num HINDER_PARTY people
 
     this.people = []; // Array of people contained
-    for (let gridY = gridY1; gridY < gridY2; gridY++) {
-        for (let gridX = gridX1; gridX < gridX2; gridX++) {
+    for (let gridY = gridY1; gridY < gridY2; gridY += 1) {
+        for (let gridX = gridX1; gridX < gridX2; gridX += 1) {
             const person = simulation.peopleGrid[gridY][gridX];
 
             this.people.push(person);
@@ -21,12 +21,12 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
         }
     }
 
-    this.draw = function() {
+    this.draw = () => {
         // Translucent fill
         let color = this.getWinner().color2;
         if (SHOW_MARGINS) {
-            factor = Math.abs(this.netAdvantage) / DISTRICT_SIZE * 1.5;
-            color = lighten(color, 0.75-factor);
+            factor = (Math.abs(this.netAdvantage) / DISTRICT_SIZE) * 1.5;
+            color = lighten(color, 0.75 - factor);
         }
         for (const person of this.people) {
             rect(simulation.ctx, person.x, person.y, SQUARE_WIDTH, SQUARE_WIDTH, color);
@@ -34,8 +34,9 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
 
         // Outline
         /**
-         * Edges that outline the district (the ones to draw) will only be edges of one person in the district. We add
-         * up all the edges (in form 'gridX,gridY,dir') and the ones with 1 occurrence we draw.
+         * Edges that outline the district (the ones to draw) will only be edges of one person in
+         * the district. We add up all the edges (in form 'gridX,gridY,dir') and the ones with 1
+         * occurrence we draw.
          */
         const edgeOccurrenceMap = new Map();
         for (const person of this.people) {
@@ -45,34 +46,33 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
         }
         // Draw outline
         for (const [edge, occurrence] of edgeOccurrenceMap) {
-            if (occurrence > 1) {
-                continue;
-            }
-            const [gridX, gridY, dir] = edge.split(',');
-            const [x, y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH];
-            if (dir == 'n') {
-                line(simulation.ctx, x, y, x + SQUARE_WIDTH, y, '#000', 3);
-            } else if (dir == 'w') {
-                line(simulation.ctx, x, y, x, y + SQUARE_WIDTH, '#000', 3);
+            if (occurrence === 1) {
+                const [gridX, gridY, dir] = edge.split(',');
+                const [x, y] = [gridX * SQUARE_WIDTH, gridY * SQUARE_WIDTH];
+                if (dir === 'n') {
+                    line(simulation.ctx, x, y, x + SQUARE_WIDTH, y, '#000', 3);
+                } else if (dir === 'w') {
+                    line(simulation.ctx, x, y, x, y + SQUARE_WIDTH, '#000', 3);
+                }
             }
         }
-    }
+    };
 
-    this.getWinner = function() {
-        if (this.isTied()) {
+    this.getWinner = () => {
+        if (this.tied) {
             return TIE;
         }
         return this.netAdvantage > 0 ? HELP_PARTY : HINDER_PARTY;
-    }
+    };
 
-    this.isTied = function() {
-        return this.netAdvantage == 0;
-    }
+    Object.defineProperties(this, {
+        tied: { get() { return this.netAdvantage === 0; } },
+    });
 
     /** Returns which party this district prioritizes swapping to another district (giving away) */
-    this.idealGiveAway = function() {
+    this.idealGiveAway = () => {
         if (FAVOR_TIE) {
-            if (this.isTied()) {
+            if (this.tied) {
                 return null;
             }
             return this.getWinner();
@@ -81,19 +81,25 @@ function District(simulation, id, gridX1, gridY1, gridX2, gridY2) {
             return HINDER_PARTY; // If flippable/at risk, try to get more HELP_PARTY people
         }
         return HELP_PARTY; // If not flippable or safe HELP_PARTY, share our HELP_PARTY people
-    }
+    };
 
-    /** Returns the weight to use for this district when picking a randomized district1. Values were determined by a
-    black box optimization method */
-    this.getDistrict1Weight = function() {
-        if (0 < this.netAdvantage && this.netAdvantage <= 2) // If at risk
+    /**
+     * Returns the weight to use for this district when picking a randomized district1. Values were
+     * determined by a black box optimization method
+     */
+    this.getDistrict1Weight = () => {
+        if (0 < this.netAdvantage && this.netAdvantage <= 2) { // If at risk
             return 1;
-        if (this.isTied())
+        }
+        if (this.tied) {
             return 11;
-        if (-4 <= this.netAdvantage && this.netAdvantage <= 0) // If flippable
+        }
+        if (-4 <= this.netAdvantage && this.netAdvantage <= 0) { // If flippable
             return 4.35442295;
-        if (this.netAdvantage > 2) // If safe to help_party
+        }
+        if (this.netAdvantage > 2) { // If safe to help_party
             return 2.47490108;
+        }
         return 2.06497273; // If safe not flippable/safe for hinder_party
-    }
+    };
 }

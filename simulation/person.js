@@ -1,4 +1,7 @@
-/** Represents one person, who gets one vote for one party. District lines are drawn around these people */
+/**
+ * Represents one person, who gets one vote for one party. District lines are drawn around these
+ * people
+ */
 function Person(simulation, id, gridX, gridY, stance) {
     this.id = id;
     [this.gridX, this.gridY] = [gridX, gridY];
@@ -6,51 +9,56 @@ function Person(simulation, id, gridX, gridY, stance) {
     this.stance = stance; // The placement of this person on the political spectrum
     this.district = null; // Defined in District
 
-    this.atWest = this.gridX == 0;
-    this.atNorth = this.gridY == 0;
-    this.atEast = this.gridX == GRID_WIDTH - 1;
-    this.atSouth = this.gridY == GRID_WIDTH - 1;
+    this.atWest = this.gridX === 0;
+    this.atNorth = this.gridY === 0;
+    this.atEast = this.gridX === GRID_WIDTH - 1;
+    this.atSouth = this.gridY === GRID_WIDTH - 1;
 
     /** Called after all people and districts are initialized */
-    this.secondaryInit = function() {
-        if (!this.atWest)
-            this.personWest = simulation.peopleGrid[this.gridY][this.gridX - 1];
-        if (!this.atNorth)
-            this.personNorth = simulation.peopleGrid[this.gridY - 1][this.gridX];
-        if (!this.atEast)
-            this.personEast = simulation.peopleGrid[this.gridY][this.gridX + 1];
-        if (!this.atSouth)
-            this.personSouth = simulation.peopleGrid[this.gridY + 1][this.gridX];
+    this.secondaryInit = () => {
+        if (!this.atWest) this.personWest = simulation.peopleGrid[this.gridY][this.gridX - 1];
+        if (!this.atNorth) this.personNorth = simulation.peopleGrid[this.gridY - 1][this.gridX];
+        if (!this.atEast) this.personEast = simulation.peopleGrid[this.gridY][this.gridX + 1];
+        if (!this.atSouth) this.personSouth = simulation.peopleGrid[this.gridY + 1][this.gridX];
 
-        if (!this.atNorth && !this.atEast) // Northeast
+        if (!this.atNorth && !this.atEast) { // Northeast
             this.personNE = simulation.peopleGrid[this.gridY - 1][this.gridX + 1];
-        if (!this.atSouth && !this.atEast) // Southeast
+        }
+        if (!this.atSouth && !this.atEast) { // Southeast
             this.personSE = simulation.peopleGrid[this.gridY + 1][this.gridX + 1];
-        if (!this.atSouth && !this.atWest) // Southwest
+        }
+        if (!this.atSouth && !this.atWest) { // Southwest
             this.personSW = simulation.peopleGrid[this.gridY + 1][this.gridX - 1];
-        if (!this.atNorth && !this.atWest) // Northwest
+        }
+        if (!this.atNorth && !this.atWest) { // Northwest
             this.personNW = simulation.peopleGrid[this.gridY - 1][this.gridX - 1];
+        }
 
-        const f = item => item != null;
         /** adjacentPeople - up to 4 people in direct cardinal directions */
-        this.adjacentPeople = [this.personWest, this.personNorth, this.personEast, this.personSouth].filter(f);
-        /** surroundingPeople - always length 8, includes all people in surrounding 8 squares, undefined if no person */
-        this.surroundingPeople = [this.personNorth, this.personNE, this.personEast, this.personSE,
-                                  this.personSouth, this.personSW, this.personWest, this.personNW];
+        this.adjacentPeople = [
+            this.personWest, this.personNorth,
+            this.personEast, this.personSouth].filter((item) => item != null);
+        /**
+         * surroundingPeople - always length 8, includes all people in surrounding 8 squares,
+         * undefined if no person
+         */
+        this.surroundingPeople = [
+            this.personNorth, this.personNE, this.personEast, this.personSE,
+            this.personSouth, this.personSW, this.personWest, this.personNW];
 
         this.setParty();
-    }
+    };
 
-    this.draw = function() {
+    this.draw = () => {
         const w = SQUARE_WIDTH * 0.175;
-        const offset = SQUARE_WIDTH/2 - w;
-        rect(simulation.ctx, this.x + offset, this.y + offset, w*2, w*2, this.party.color1);
-    }
+        const offset = SQUARE_WIDTH / 2 - w;
+        rect(simulation.ctx, this.x + offset, this.y + offset, w * 2, w * 2, this.party.color1);
+    };
 
-    this.setParty = function() {
+    this.setParty = () => {
         const before = this.party;
         this.party = this.stance > STANCE_THRESHOLD ? RED : BLUE;
-        if (typeof before == 'undefined') { // For init
+        if (typeof before === 'undefined') { // For initialization
             this.district.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
             simulation.demographics.increment(this.party);
             return;
@@ -61,47 +69,48 @@ function Person(simulation, id, gridX, gridY, stance) {
             simulation.demographics.increment(before, -1);
             simulation.demographics.increment(this.party);
         }
-    }
+    };
 
-    /** Returns a list of districts neighboring this person, not including the district this is in */
-    this.getAdjacentDistricts = function() {
+    /** Returns a list of districts neighboring this person, excluding the district this is in */
+    this.getAdjacentDistricts = () => {
         const result = [];
         for (const person of this.adjacentPeople) {
-            if (this.district.id != person.district.id) {
+            if (this.district.id !== person.district.id) {
                 result.push(person.district);
             }
         }
         return result;
-    }
+    };
 
-    this.getEdges = function() {
+    this.getEdges = () => {
         // Edge are in format 'gridX,gridY,dir'. Remember dir can only be 'n' or 'w'
         const edges = [
-            this.atWest  ? null : `${gridX},${gridY},w`,
+            this.atWest ? null : `${gridX},${gridY},w`,
             this.atNorth ? null : `${gridX},${gridY},n`,
-            this.atEast  ? null : `${gridX+1},${gridY},w`,
-            this.atSouth ? null : `${gridX},${gridY+1},n`,
-        ]
-        return edges.filter(edge => edge != null);
-    }
+            this.atEast ? null : `${gridX + 1},${gridY},w`,
+            this.atSouth ? null : `${gridX},${gridY + 1},n`,
+        ];
+        return edges.filter((edge) => edge != null);
+    };
 
     /**
      * Returns whether the person can be removed from their district without disconnecting district
      *
-     * Method: get a boolean list of whether each of the surrounding 8 people are in our district. If there are more
-     * than 2 'streaks' of True's (including carrying over between start and end of the list), then removing the
-     * square will cause a disconnected group because the surrounding squares are not connected to each other. This
-     * works on the assumption that there are no holes, which there aren't because all districts are the same size,
-     * and there are no people without a district.
+     * Method: get a boolean list of whether each of the surrounding 8 people are in our district.
+     * If there are more than 2 'streaks' of True's (including carrying over between start and end
+     * of the list), then removing the square will cause a disconnected group because the
+     * surrounding squares are not connected to each other. This works on the assumption that there
+     * are no holes, which there aren't because all districts are the same size, and there are no
+     * people without a district.
      */
-    this.getIsRemovable = function() {
+    this.getIsRemovable = () => {
         const boolList = [];
         for (const person of this.surroundingPeople) {
-            if (person == undefined) {
+            if (typeof person === 'undefined') {
                 boolList.push(false);
                 continue;
             }
-            boolList.push(this.district.id == person.district.id);
+            boolList.push(this.district.id === person.district.id);
         }
         const numTrues = boolList.count(true);
         for (const arr of boolList.concat(boolList).group()) {
@@ -110,14 +119,14 @@ function Person(simulation, id, gridX, gridY, stance) {
             }
         }
         return false;
-    }
+    };
 
     /** Change which district this person belongs to, does not change location or party */
-    this.changeDistricts = function(destination) {
+    this.changeDistricts = (destination) => {
         this.district.people.splice(this.district.people.indexOf(this), 1);
         this.district.netAdvantage -= this.party.equalTo(HELP_PARTY) ? 1 : -1;
         destination.people.push(this);
         destination.netAdvantage += this.party.equalTo(HELP_PARTY) ? 1 : -1;
         this.district = destination;
-    }
+    };
 }

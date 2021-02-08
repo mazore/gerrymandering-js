@@ -1,11 +1,9 @@
 function Party(name, color) {
-    this.name = name
-    this.color1 = color // Person color, darker
-    this.color2 = lighten(color, 0.55) // District color, lighter
+    this.name = name;
+    this.color1 = color; // Person color, darker
+    this.color2 = lighten(color, 0.55); // District color, lighter
 
-    this.equalTo = function(other) {
-        return this.name == other.name;
-    }
+    this.equalTo = (other) => this.name === other.name;
 }
 
 const BLUE = new Party('blue', 'rgb(88, 104, 170)');
