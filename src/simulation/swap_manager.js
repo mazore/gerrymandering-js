@@ -1,5 +1,5 @@
 /** Manages the swapping of two people between districts. See readme for more information */
-import { shuffled, weightedChoice } from '../helpers/functions.js';
+import { containsObject, shuffled, weightedChoice } from '../helpers/functions.js';
 import ps from '../parameters.js';
 
 export default function SwapManager(simulation) {
@@ -49,10 +49,10 @@ export default function SwapManager(simulation) {
             const aDistrictTied = ps.FAVOR_TIE ? this.district1.tied || this.district2.tied : null;
 
             for (this.person2 of this.getPerson2Choices()) {
-                if (!this.person2.getAdjacentDistricts().containsObject(this.district1)) {
+                if (!containsObject(this.person2.getAdjacentDistricts(), this.district1)) {
                     continue; // If not touching district1
                 }
-                if (this.person2.adjacentPeople.containsObject(this.person1)) {
+                if (containsObject(this.person2.adjacentPeople, this.person1)) {
                     continue; // Swapping two adjacent people will likely cause disconnection
                 }
                 if (!this.person2.getIsRemovable()) {

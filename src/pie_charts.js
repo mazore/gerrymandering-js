@@ -67,9 +67,9 @@ export default function PieCharts(main) {
 
             ps.PERCENT_BLUE = 100 * (1 - percent);
             ps.STANCE_THRESHOLD = Math.floor(ps.NUM_PEOPLE * (ps.PERCENT_BLUE / 100) - 0.5);
-            for (const person of main.simulation.iterPeople()) {
+            main.simulation.peopleGrid.flat().forEach((person) => {
                 person.setParty();
-            }
+            });
 
             this.drawPopulationPieChart();
             this.drawDistrictsPieChart();

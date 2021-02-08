@@ -3,6 +3,7 @@
  * people
  */
 import { rect } from '../helpers/drawing.js';
+import { count, group, increment } from '../helpers/functions.js';
 import ps from '../parameters.js';
 import { BLUE, RED } from '../parties.js';
 
@@ -64,14 +65,14 @@ export default function Person(simulation, id, gridX, gridY, stance) {
         this.party = this.stance > ps.STANCE_THRESHOLD ? RED : BLUE;
         if (typeof before === 'undefined') { // For initialization
             this.district.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
-            simulation.demographics.increment(this.party);
+            increment(simulation.demographics, this.party);
             return;
         }
         if (!this.party.equalTo(before)) {
             this.district.netAdvantage -= before.equalTo(ps.HELP_PARTY) ? 1 : -1;
             this.district.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
-            simulation.demographics.increment(before, -1);
-            simulation.demographics.increment(this.party);
+            increment(simulation.demographics, before, -1);
+            increment(simulation.demographics, this.party);
         }
     };
 
@@ -116,8 +117,8 @@ export default function Person(simulation, id, gridX, gridY, stance) {
             }
             boolList.push(this.district.id === person.district.id);
         }
-        const numTrues = boolList.count(true);
-        for (const arr of boolList.concat(boolList).group()) {
+        const numTrues = count(boolList, true);
+        for (const arr of group(boolList.concat(boolList))) {
             if (arr[0] && arr.length >= numTrues) {
                 return true;
             }

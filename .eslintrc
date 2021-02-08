@@ -7,16 +7,16 @@
       "ecmaVersion": 2020
     },
     "rules": {
-        "func-names": ["error", "always", { "generators": "never" }],
-        "indent": ["error", 4],
-        "import/extensions": 0,
-        "linebreak-style": 0,
-        "no-continue": 0,
-        "no-new": 0,
-        "no-param-reassign": ["error", { "props": false }],
-        "yoda": ["error", "never", { "exceptRange": true }],
-        // To fix
-        "no-extend-native": 0, // Should probably fix this
-        "no-restricted-syntax": 0 // Allow for of loops, should stop using them
+        "func-names": ["error", "always", { "generators": "never" }], // Don't need generator names
+        "indent": ["error", 4], // Indent of 4 spaces
+        "import/extensions": 0, // Need extensions for imports
+        "linebreak-style": 0, // Windows line breaks (CRLF)
+        "no-continue": 0, // Allow continue statements in for loops
+        "no-new": 0, // Allow creating objects without assinging them (for highest level)
+        "no-restricted-syntax": [ // airbnb-base also disallows for..of so allow that
+            "error", "ForInStatement", "LabeledStatement", "WithStatement"
+        ],
+        "no-param-reassign": ["error", { "props": false }], // Can assign to properties of params
+        "yoda": ["error", "never", { "exceptRange": true }] // Allow (5 < x && x < 10)
     }
 }

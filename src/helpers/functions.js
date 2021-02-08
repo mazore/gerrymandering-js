@@ -1,22 +1,17 @@
-/** Returns a random item from `arr` */
-export function choice(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+/** Returns the number of times `value` appears in array `arr` */
+export function count(arr, value) {
+    return arr.reduce((a, v) => (v === value ? a + 1 : a), 0);
 }
 
-/** Returns the number of times `value` appears in the array */
-Array.prototype.count = function count(value) {
-    return this.reduce((a, v) => (v === value ? a + 1 : a), 0);
-};
-
-/** Returns if array contains `obj` (using the `id` of `obj`) */
-Array.prototype.containsObject = function containsObject(obj) {
-    for (const item of this) {
+/** Returns if array `arr` contains `obj` (using the `id` of `obj`) */
+export function containsObject(arr, obj) {
+    for (const item of arr) {
         if (item.id === obj.id) {
             return true;
         }
     }
     return false;
-};
+}
 
 /**
  * Returns the distance between points, use lessThan or greaterThan for comparisons to
@@ -43,17 +38,17 @@ export function getRGB(str) {
 }
 
 /** Groups same values, from https://codegolf.stackexchange.com/a/173976 */
-Array.prototype.group = function group(f) {
+export function group(arr) {
     // This is code golf code
     let a;
     const r = [];
     let k = r;
-    for (const i of this) {
+    for (const i of arr) {
         // eslint-disable-next-line no-cond-assign, no-unused-expressions
-        k !== (k = f ? f(i) : i) ? r.push(a = [i]) : a.push(i);
+        k !== (k = i) ? r.push(a = [i]) : a.push(i);
     }
     return r;
-};
+}
 
 /**
  * Returns 'rgb(r, g, b)' string that is `percent` percent towards white, 1 being white, 0 being no
@@ -67,10 +62,10 @@ export function lighten(str, percent) {
     return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
 }
 
-/** Increments the value at the given key by `amount` */
-Map.prototype.increment = function increment(key, amount = 1) {
-    this.set(key, (this.get(key) ?? 0) + amount);
-};
+/** Increments the value in `map` at the `key` by `amount` */
+export function increment(map, key, amount = 1) {
+    map.set(key, (map.get(key) ?? 0) + amount);
+}
 
 /** Shuffle and return the given array, from https://github.com/processing/p5.js/blob/main/src/utilities/array_functions.js#L209 */
 export function shuffled(original) {

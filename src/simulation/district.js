@@ -3,7 +3,7 @@
  * which party has the most people contained in this district
  */
 import { line, rect } from '../helpers/drawing.js';
-import { lighten } from '../helpers/functions.js';
+import { lighten, increment } from '../helpers/functions.js';
 import ps from '../parameters.js';
 import { TIE } from '../parties.js';
 
@@ -46,7 +46,7 @@ export default function District(simulation, id, gridX1, gridY1, gridX2, gridY2)
         const edgeOccurrenceMap = new Map();
         for (const person of this.people) {
             for (const edge of person.getEdges()) {
-                edgeOccurrenceMap.increment(edge);
+                increment(edgeOccurrenceMap, edge);
             }
         }
         // Draw outline

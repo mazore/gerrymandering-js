@@ -1,5 +1,5 @@
 /** Manages people, districts, and swapping */
-import { shuffled } from './helpers/functions.js';
+import { increment, shuffled } from './helpers/functions.js';
 import ps from './parameters.js';
 import { BLUE, RED, TIE } from './parties.js';
 
@@ -76,12 +76,12 @@ export default function Simulation(main) {
     };
 
     this.draw = () => {
-        for (const district of this.districts) {
+        this.districts.forEach((district) => {
             district.draw();
-        }
-        for (const person of this.iterPeople()) {
+        });
+        this.peopleGrid.flat().forEach((person) => {
             person.draw();
-        }
+        });
     };
 
     this.canvas.addEventListener('mousedown', main.mouseDown);
@@ -97,22 +97,14 @@ export default function Simulation(main) {
         const map = new Map([[BLUE, 0], [RED, 0], [TIE, 0]]);
         for (const district of this.districts) {
             const winner = district.getWinner();
-            map.increment(winner);
+            increment(map, winner);
         }
         return map;
     };
 
-    this.iterPeople = function* () {
-        for (const row of this.peopleGrid) {
-            for (const person of row) {
-                yield person;
-            }
-        }
-    };
-
     this.generatePeople();
     this.generateDistricts();
-    for (const person of this.iterPeople()) {
+    for (const person of this.peopleGrid.flat()) {
         person.secondaryInit();
     }
     this.draw();

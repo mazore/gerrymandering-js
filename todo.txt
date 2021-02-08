@@ -1,5 +1,4 @@
 TODO:
-- stop using for of and stop extending natives
 - maybe switch to classes not constructors
 - async swapping
 - add percent to pie charts
