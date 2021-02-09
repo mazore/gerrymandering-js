@@ -32,6 +32,18 @@ export function filledArray(value, length) {
     return Array(length).fill(value);
 }
 
+/** Returns `arr` flattened, from #3 https://dev.to/ryan_dunton/flattening-an-array-a-performance-test-dka */
+export function flattened(arr) {
+    const result = [];
+    for (let i = 0; i < arr.length; i += 1) {
+        const current = arr[i];
+        for (let j = 0; j < current.length; j += 1) {
+            result.push(current[j]);
+        }
+    }
+    return result;
+}
+
 /** Returns r, g, and b channels (strings) from 'rgb(r, g, b)' string */
 export function getRGB(str) {
     return str.match(/\d+/g);

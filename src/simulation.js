@@ -1,5 +1,5 @@
 /** Manages people, districts, and swapping */
-import { increment, shuffled } from './helpers/functions.js';
+import { flattened, increment, shuffled } from './helpers/functions.js';
 import ps from './parameters.js';
 import { BLUE, RED, TIE } from './parties.js';
 
@@ -79,7 +79,7 @@ export default function Simulation(main) {
         this.districts.forEach((district) => {
             district.draw();
         });
-        this.peopleGrid.flat().forEach((person) => {
+        flattened(this.peopleGrid).forEach((person) => {
             person.draw();
         });
     };
@@ -104,7 +104,7 @@ export default function Simulation(main) {
 
     this.generatePeople();
     this.generateDistricts();
-    for (const person of this.peopleGrid.flat()) {
+    for (const person of flattened(this.peopleGrid)) {
         person.secondaryInit();
     }
     this.draw();

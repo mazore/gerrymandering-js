@@ -1,4 +1,4 @@
-import PieCharts from './pie_charts.js';
+import PieCharts from './ui/pie_charts.js';
 import Simulation from './simulation.js';
 // import { speedTest, scoreTest } from './tests.js';
 
@@ -6,7 +6,7 @@ function Main() {
     this.update = () => {
         this.simulation.update();
 
-        this.pieCharts.drawDistrictsPieChart();
+        this.pieCharts.districtsPieChart.draw();
 
         this.requestId = requestAnimationFrame(this.update);
     };
