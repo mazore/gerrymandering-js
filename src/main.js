@@ -14,12 +14,24 @@ function Main() {
     this.mouseDown = (event) => {
         if (event.button === 0) { // Left click
             if (this.requestId == null) { // Start running
-                this.requestId = requestAnimationFrame(this.update);
+                this.resume();
             } else { // Stop running
-                cancelAnimationFrame(this.requestId);
-                this.requestId = null;
-                this.simulation.draw(); // Because it swaps after drawing every update
+                this.pause();
             }
+        }
+    };
+
+    this.resume = () => {
+        if (this.requestId == null) {
+            this.requestId = requestAnimationFrame(this.update);
+        }
+    };
+
+    this.pause = () => {
+        if (this.requestId != null) {
+            cancelAnimationFrame(this.requestId);
+            this.requestId = null;
+            this.simulation.draw(); // Because it swaps after drawing every update
         }
     };
 

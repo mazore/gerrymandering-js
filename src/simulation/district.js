@@ -64,20 +64,22 @@ export default function District(simulation, id, gridX1, gridY1, gridX2, gridY2)
     };
 
     this.getWinner = () => {
-        if (this.tied) {
+        if (this.tied()) {
             return TIE;
         }
         return this.netAdvantage > 0 ? ps.HELP_PARTY : ps.HINDER_PARTY;
     };
 
-    Object.defineProperties(this, {
-        tied: { get() { return this.netAdvantage === 0; } },
-    });
+    // Object.defineProperties(this, {
+    //     tied: { get() { return this.netAdvantage === 0; } },
+    // });
+
+    this.tied = () => this.netAdvantage === 0;
 
     /** Returns which party this district prioritizes swapping to another district (giving away) */
     this.idealGiveAway = () => {
         if (ps.FAVOR_TIE) {
-            if (this.tied) {
+            if (this.tied()) {
                 return null;
             }
             return this.getWinner();
@@ -96,7 +98,7 @@ export default function District(simulation, id, gridX1, gridY1, gridX2, gridY2)
         if (0 < this.netAdvantage && this.netAdvantage <= 2) { // If at risk
             return 1;
         }
-        if (this.tied) {
+        if (this.tied()) {
             return 11;
         }
         if (-4 <= this.netAdvantage && this.netAdvantage <= 0) { // If flippable

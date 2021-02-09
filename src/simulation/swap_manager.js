@@ -46,7 +46,10 @@ export default function SwapManager(simulation) {
     this.getPerson2 = () => {
         for (this.district2 of shuffled(this.person1.getAdjacentDistricts())) {
             const party2CanBeHelpParty = this.party2CanBeHelpParty();
-            const aDistrictTied = ps.FAVOR_TIE ? this.district1.tied || this.district2.tied : null;
+            let aDistrictTied;
+            if (ps.FAVOR_TIE) {
+                aDistrictTied = this.district1.tied() || this.district2.tied();
+            }
 
             for (this.person2 of this.getPerson2Choices()) {
                 if (!containsObject(this.person2.getAdjacentDistricts(), this.district1)) {
@@ -107,7 +110,7 @@ export default function SwapManager(simulation) {
         // Now we know that district2 netAdvantage is decreasing by 2 and district1 netAdvantage
         // is increasing by 2
         if (this.district2.netAdvantage === 2) { // If district2 will become tie from HELP_PARTY
-            if (this.district1.tied) {
+            if (this.district1.tied()) {
                 return true; // district1 will become HELP_PARTY from tie
             }
             return false;

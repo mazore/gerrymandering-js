@@ -11,6 +11,7 @@ export default function PieCharts(main) {
 
     this.canvas = document.getElementById('piecharts');
     this.ctx = this.canvas.getContext('2d');
+    this.left = this.canvas.getBoundingClientRect().left;
     this.top = this.canvas.getBoundingClientRect().top;
 
     // Fix blurriness
@@ -22,21 +23,48 @@ export default function PieCharts(main) {
 
     for (const eventName of ['mousemove', 'touchmove']) {
         window.addEventListener(eventName, (event) => {
+            event.preventDefault();
             this.populationPieChart.mouseMove(event);
+            this.districtsPieChart.mouseMove(event);
+            this.mouseMove();
         });
     }
 
     for (const eventName of ['mousedown', 'touchstart']) {
-        this.canvas.addEventListener(eventName, () => {
+        this.canvas.addEventListener(eventName, (event) => {
+            event.preventDefault();
             this.populationPieChart.mouseDown();
+            this.districtsPieChart.mouseDown();
+            this.mouseDown();
         });
     }
 
     for (const eventName of ['mouseup', 'touchend']) {
-        window.addEventListener(eventName, () => {
-            this.populationPieChart.mouseUp();
+        window.addEventListener(eventName, (event) => {
+            event.preventDefault();
+            this.mouseUp();
         });
     }
+
+    this.mouseMove = () => {
+        if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
+            document.body.style.cursor = 'grab';
+        } else {
+            document.body.style.cursor = 'default';
+        }
+    };
+
+    this.mouseDown = () => {
+        if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
+            document.body.style.cursor = 'grabbing';
+        }
+    };
+
+    this.mouseUp = () => {
+        this.populationPieChart.dragging = false;
+        this.districtsPieChart.dragging = false;
+        document.body.style.cursor = 'default';
+    };
 
     /** Helper function that draws a filled arc for a party */
     this.drawPieSlice = (party, centerX, map, quantity) => {

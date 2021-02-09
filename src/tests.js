@@ -12,7 +12,7 @@ export function speedTest(Main) {
             main.simulation.swapManager.swap();
         }
         main.simulation.draw();
-        main.pieCharts.districtsPieChart.draw();
+        // main.pieCharts.districtsPieChart.draw();
         timeSum += window.performance.now() - t;
 
         if (i % 100 === 0) {

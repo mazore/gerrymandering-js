@@ -6,8 +6,8 @@ import { BLUE, RED } from '../parties.js';
 export default function PopulationPieChart(pieCharts) {
     this.centerX = 100;
 
-    this.populationDragging = false;
-    this.populationHovering = false;
+    this.dragging = false;
+    this.hovering = false;
 
     this.draw = () => {
         const { ctx } = pieCharts;
@@ -19,7 +19,7 @@ export default function PopulationPieChart(pieCharts) {
         circle(ctx, ...this.getDragPoint(), 5, '#ffff88', true);
     };
 
-    /** Returns a point in canvas coords that is a point to drag on the population chart */
+    /** Returns a point in canvas coords that is a point to drag */
     this.getDragPoint = () => {
         const percent = (pieCharts.main.simulation.demographics.get(BLUE) / ps.NUM_PEOPLE);
         const angle = -Math.PI / 2 + (Math.PI * 2 * percent);
@@ -28,10 +28,13 @@ export default function PopulationPieChart(pieCharts) {
         return [x, y];
     };
 
+    this.draw();
+
     this.mouseMove = (event) => {
-        if (this.populationDragging) {
-            const dy = pieCharts.centerY + pieCharts.top - event.y;
-            let angle = Math.atan2(event.x - this.centerX, dy);
+        if (this.dragging) {
+            const dx = pieCharts.left - this.centerX + event.x;
+            const dy = pieCharts.top + pieCharts.centerY - event.y;
+            let angle = Math.atan2(dx, dy);
             if (angle < 0) angle += Math.PI * 2; // Ensure 0 to 2pi
             const percent = angle / (Math.PI * 2);
 
@@ -51,27 +54,15 @@ export default function PopulationPieChart(pieCharts) {
         // Update cursor and if hovering
         const [x, y] = this.getDragPoint();
         if (distance(x, y + pieCharts.top, event.x, event.y, 15)) {
-            this.populationHovering = true;
-            document.body.style.cursor = 'grab';
+            this.hovering = true;
         } else {
-            this.populationHovering = false;
-            document.body.style.cursor = 'default';
+            this.hovering = false;
         }
     };
 
     this.mouseDown = () => {
-        // Grab if hovering
-        if (this.populationHovering) {
-            this.populationDragging = true;
-            document.body.style.cursor = 'grabbing';
+        if (this.hovering) {
+            this.dragging = true;
         }
     };
-
-    this.mouseUp = () => {
-        // Stop grabbing
-        this.populationDragging = false;
-        document.body.style.cursor = 'default';
-    };
-
-    this.draw();
 }
