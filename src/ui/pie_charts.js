@@ -1,5 +1,3 @@
-import { arc, text } from '../helpers/drawing.js';
-import { RED } from '../parties.js';
 import DistrictsPieChart from './districts_pie_chart.js';
 import PopulationPieChart from './population_pie_chart.js';
 
@@ -30,15 +28,21 @@ export default function PieCharts(main) {
         }
     };
 
-    this.mouseMove = (event) => {
+    this.checkHovering = (event) => {
         event.preventDefault();
-        this.populationPieChart.mouseMove(event);
-        this.districtsPieChart.mouseMove(event);
+        this.populationPieChart.checkHovering(event);
+        this.districtsPieChart.checkHovering(event);
         if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
             document.body.style.cursor = 'grab';
         } else {
             document.body.style.cursor = 'default';
         }
+    };
+
+    this.updateDragging = (event) => {
+        event.preventDefault();
+        this.populationPieChart.updateDragging(event);
+        this.districtsPieChart.updateDragging(event);
     };
 
     this.mouseUp = (event) => {
@@ -49,7 +53,8 @@ export default function PieCharts(main) {
     };
 
     this.canvas.addEventListener('mousedown', this.mouseDown);
-    window.addEventListener('mousemove', this.mouseMove);
+    this.canvas.addEventListener('mousemove', this.checkHovering);
+    window.addEventListener('mousemove', this.updateDragging);
     window.addEventListener('mouseup', this.mouseUp);
 
     const addTouchFunc = (eventName, funcName) => {
@@ -62,25 +67,8 @@ export default function PieCharts(main) {
         }, { passive: false });
     };
     addTouchFunc('touchstart', 'mouseDown');
-    addTouchFunc('touchmove', 'mouseMove');
+    addTouchFunc('touchmove', 'updateDragging');
     window.addEventListener('touchend', this.mouseUp, { passive: false });
-
-    /** Helper function that draws a filled arc for a party */
-    this.drawPieSlice = (party, centerX, map, quantity) => {
-        const factor = party.equalTo(RED) ? 1 : -1;
-        const start = -Math.PI / 2;
-        const span = Math.PI * 2 * (map.get(party) / quantity);
-        const end = start + span * factor;
-        arc(this.ctx, centerX, this.centerY, this.radius,
-            start, end, party.equalTo(RED), party.color1);
-
-        if (span !== 0) {
-            const mid = (start + end) / 2;
-            const x = centerX + Math.cos(mid) * (this.radius * 0.5);
-            const y = this.centerY + Math.sin(mid) * (this.radius * 0.5);
-            text(this.ctx, map.get(party), x, y);
-        }
-    };
 
     this.populationPieChart = new PopulationPieChart(this);
     this.districtsPieChart = new DistrictsPieChart(this);

@@ -1,4 +1,6 @@
-import { circle, rect, text } from '../helpers/drawing.js';
+import {
+    arc, circle, rect, text,
+} from '../helpers/drawing.js';
 import { distance } from '../helpers/functions.js';
 import { BLUE, RED, TIE } from '../parties.js';
 
@@ -31,10 +33,28 @@ export default class PieChartBase {
 
         text(ctx, this.name, this.centerX, 25, '#000', 15); // Label
 
-        this.pieCharts.drawPieSlice(BLUE, this.centerX, score, this.quantity); // Blue pie slice
-        this.pieCharts.drawPieSlice(RED, this.centerX, score, this.quantity); // Red pie slice
+        this.drawPieSlice(BLUE, score);
+        this.drawPieSlice(RED, score);
 
         circle(ctx, ...this.getDragPoint(), 5, '#ffff88', true); // Drag point
+    }
+
+    /** Helper function that draws a filled arc for a party */
+    drawPieSlice(party, map) {
+        const { ctx, centerY, radius } = this.pieCharts;
+
+        const factor = party.equalTo(RED) ? 1 : -1;
+        const start = -Math.PI / 2;
+        const span = Math.PI * 2 * (map.get(party) / this.quantity);
+        const end = start + span * factor;
+        arc(ctx, this.centerX, centerY, radius, start, end, party.equalTo(RED), party.color1);
+
+        if (span !== 0) { // Label
+            const mid = (start + end) / 2;
+            const x = this.centerX + Math.cos(mid) * (radius * 0.5);
+            const y = centerY + Math.sin(mid) * (radius * 0.5);
+            text(ctx, map.get(party), x, y);
+        }
     }
 
     /** Returns a point in canvas coords that is a point to drag */
@@ -45,12 +65,7 @@ export default class PieChartBase {
         return [x, y];
     }
 
-    mouseMove(event) {
-        if (this.dragging) {
-            this.whileDragging(event);
-            return; // Don't need to update cursor if dragging
-        }
-
+    checkHovering(event) {
         const [x, y] = this.getDragPoint();
         if (distance(x, y + this.pieCharts.top, event.x, event.y, 15)) {
             this.hovering = true;
@@ -59,20 +74,22 @@ export default class PieChartBase {
         }
     }
 
-    whileDragging(event) {
-        const dx = this.pieCharts.left - this.centerX + event.x;
-        const dy = this.pieCharts.top + this.pieCharts.centerY - event.y;
-        let angle = Math.atan2(dx, dy);
-        if (angle < 0) angle += Math.PI * 2; // Ensure 0 to 2pi
-        const percent = angle / (Math.PI * 2);
+    updateDragging(event) {
+        if (this.dragging) {
+            const dx = this.pieCharts.left - this.centerX + event.x;
+            const dy = this.pieCharts.top + this.pieCharts.centerY - event.y;
+            let angle = Math.atan2(dx, dy);
+            if (angle < 0) angle += Math.PI * 2; // Ensure 0 to 2pi
+            const percent = angle / (Math.PI * 2);
 
-        this.onDragged(percent);
+            this.onDragged(percent);
 
-        this.draw();
+            this.draw();
+        }
     }
 
     mouseDown(event) {
-        this.mouseMove(event);
+        this.checkHovering(event);
         if (this.hovering) {
             this.dragging = true;
         }
