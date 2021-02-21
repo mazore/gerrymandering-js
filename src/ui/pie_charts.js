@@ -21,26 +21,19 @@ export default function PieCharts(main) {
     this.canvas.style.height = `${this.height}px`;
     this.ctx.scale(2, 2);
 
-    window.addEventListener('mousemove', (event) => {
+    this.mouseDown = (event) => {
+        event.preventDefault();
+        this.populationPieChart.mouseDown(event);
+        this.districtsPieChart.mouseDown(event);
+        if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
+            document.body.style.cursor = 'grabbing';
+        }
+    };
+
+    this.mouseMove = (event) => {
         event.preventDefault();
         this.populationPieChart.mouseMove(event);
         this.districtsPieChart.mouseMove(event);
-        this.mouseMove();
-    });
-
-    this.canvas.addEventListener('mousedown', (event) => {
-        event.preventDefault();
-        this.populationPieChart.mouseDown();
-        this.districtsPieChart.mouseDown();
-        this.mouseDown();
-    });
-
-    window.addEventListener('mouseup', (event) => {
-        event.preventDefault();
-        this.mouseUp();
-    });
-
-    this.mouseMove = () => {
         if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
             document.body.style.cursor = 'grab';
         } else {
@@ -48,17 +41,29 @@ export default function PieCharts(main) {
         }
     };
 
-    this.mouseDown = () => {
-        if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
-            document.body.style.cursor = 'grabbing';
-        }
-    };
-
-    this.mouseUp = () => {
+    this.mouseUp = (event) => {
+        event.preventDefault();
         this.populationPieChart.dragging = false;
         this.districtsPieChart.dragging = false;
         document.body.style.cursor = 'default';
     };
+
+    this.canvas.addEventListener('mousedown', this.mouseDown);
+    window.addEventListener('mousemove', this.mouseMove);
+    window.addEventListener('mouseup', this.mouseUp);
+
+    const addTouchFunc = (eventName, funcName) => {
+        window.addEventListener(eventName, (event) => {
+            if (event.touches.length === 1) {
+                const touch = event.touches[0];
+                [event.x, event.y] = [touch.pageX, touch.pageY];
+                this[funcName](event);
+            }
+        }, { passive: false });
+    };
+    addTouchFunc('touchstart', 'mouseDown');
+    addTouchFunc('touchmove', 'mouseMove');
+    window.addEventListener('touchend', this.mouseUp, { passive: false });
 
     /** Helper function that draws a filled arc for a party */
     this.drawPieSlice = (party, centerX, map, quantity) => {

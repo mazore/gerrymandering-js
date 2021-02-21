@@ -71,7 +71,8 @@ export default class PieChartBase {
         this.draw();
     }
 
-    mouseDown() {
+    mouseDown(event) {
+        this.mouseMove(event);
         if (this.hovering) {
             this.dragging = true;
         }

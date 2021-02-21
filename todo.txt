@@ -1,7 +1,8 @@
 TODO:
+- don't update cursor for page wide mouse move
+- abstract drawPieSlice
 - drag districts pie charts to control HELP_PARTY, HINDER_PARTY, and FAVOR_TIE
     - rework swapping (with setInterval)
-- touch support
 - implement districts pie chart dragging with even grid widths (tied districts)
 - maybe combine pie chart constructor functions
 - add percent to pie charts
