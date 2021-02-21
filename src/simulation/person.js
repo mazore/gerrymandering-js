@@ -62,7 +62,7 @@ export default function Person(simulation, id, gridX, gridY, stance) {
 
     this.setParty = () => {
         const before = this.party;
-        this.party = this.stance > ps.STANCE_THRESHOLD ? RED : BLUE;
+        this.party = this.stance < ps.STANCE_THRESHOLD ? RED : BLUE;
         if (typeof before === 'undefined') { // For initialization
             this.district.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
             increment(simulation.demographics, this.party);

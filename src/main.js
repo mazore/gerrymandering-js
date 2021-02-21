@@ -1,6 +1,5 @@
 import PieCharts from './ui/pie_charts.js';
 import Simulation from './simulation.js';
-// import { speedTest, scoreTest } from './tests.js';
 
 function Main() {
     this.update = () => {
@@ -41,5 +40,6 @@ function Main() {
 }
 
 new Main();
+// import { speedTest, scoreTest } from './tests.js';
 // speedTest(Main);
 // scoreTest(Main);

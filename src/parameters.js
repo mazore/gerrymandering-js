@@ -7,11 +7,12 @@ function Parameters() {
      * @param: GRID_WIDTH - Width and height of grid of people
      * @param: HELP_PARTY - Party to help during the gerrymandering process
      * @param: FAVOR_TIE - Whether or not to try to make more tied districts
-     * @param: PERCENT_BLUE - What percentage of people vote blue
+     * @param: TARGET_PERCENT_DISTRICTS_BLUE - Target percent of districts to be won by blue
+     * @param: PERCENT_RED - What percentage of people vote red (0 to 1)
      * @param: SHOW_MARGINS - Whether to set district color saturation based on victory margin
      *
      * @param: HINDER_PARTY - Party to hinder during the gerrymandering process
-     * @param: STANCE_THRESHOLD - Where to divide people's stances
+     * @param: STANCE_THRESHOLD - Where to divide people's stances, essentially number of red people
      * @param: SQUARE_WIDTH - Width of a grid square
      */
     this.SIMULATION_WIDTH = 480;
@@ -19,13 +20,14 @@ function Parameters() {
     this.GRID_WIDTH = 24;
     this.HELP_PARTY = BLUE;
     this.FAVOR_TIE = false;
-    this.PERCENT_BLUE = 50;
+    this.PERCENT_RED = 0.5;
+    this.TARGET_PERCENT_DISTRICTS_BLUE = 0.5;
     this.SHOW_MARGINS = false;
 
     this.HINDER_PARTY = this.HELP_PARTY.equalTo(RED) ? BLUE : RED;
     this.NUM_PEOPLE = this.GRID_WIDTH ** 2;
     this.NUM_DISTRICTS = this.NUM_PEOPLE / this.DISTRICT_SIZE;
-    this.STANCE_THRESHOLD = Math.floor(this.NUM_PEOPLE * (this.PERCENT_BLUE / 100) - 0.5);
+    this.STANCE_THRESHOLD = Math.floor(this.NUM_PEOPLE * this.PERCENT_RED + 0.5);
     this.SQUARE_WIDTH = this.SIMULATION_WIDTH / this.GRID_WIDTH;
 
     if (!Number.isInteger(Math.sqrt(this.DISTRICT_SIZE))) {

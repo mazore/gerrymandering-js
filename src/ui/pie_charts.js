@@ -21,30 +21,24 @@ export default function PieCharts(main) {
     this.canvas.style.height = `${this.height}px`;
     this.ctx.scale(2, 2);
 
-    for (const eventName of ['mousemove', 'touchmove']) {
-        window.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            this.populationPieChart.mouseMove(event);
-            this.districtsPieChart.mouseMove(event);
-            this.mouseMove();
-        });
-    }
+    window.addEventListener('mousemove', (event) => {
+        event.preventDefault();
+        this.populationPieChart.mouseMove(event);
+        this.districtsPieChart.mouseMove(event);
+        this.mouseMove();
+    });
 
-    for (const eventName of ['mousedown', 'touchstart']) {
-        this.canvas.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            this.populationPieChart.mouseDown();
-            this.districtsPieChart.mouseDown();
-            this.mouseDown();
-        });
-    }
+    this.canvas.addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        this.populationPieChart.mouseDown();
+        this.districtsPieChart.mouseDown();
+        this.mouseDown();
+    });
 
-    for (const eventName of ['mouseup', 'touchend']) {
-        window.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            this.mouseUp();
-        });
-    }
+    window.addEventListener('mouseup', (event) => {
+        event.preventDefault();
+        this.mouseUp();
+    });
 
     this.mouseMove = () => {
         if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
