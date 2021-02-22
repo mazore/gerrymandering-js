@@ -68,7 +68,7 @@ export default function SwapManager(simulation) {
                 if (!party2CanBeHelpParty && this.person2.party.equalTo(ps.HELP_PARTY)) {
                     return 'restart'; // Better than `continue` not sure why
                 }
-                return 'complete';
+                return 'completed';
             }
         }
         return 'restart';

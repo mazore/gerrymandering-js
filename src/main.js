@@ -7,7 +7,9 @@ function Main() {
 
         this.pieCharts.districtsPieChart.draw();
 
-        this.requestId = requestAnimationFrame(this.update);
+        if (this.requestId !== null) { // If paused during update
+            this.requestId = requestAnimationFrame(this.update);
+        }
     };
 
     this.mouseDown = (event) => {

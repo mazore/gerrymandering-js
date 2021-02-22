@@ -68,11 +68,31 @@ export default function Simulation(main) {
 
         for (swapsDone = 0; ; swapsDone += 1) {
             this.swapManager.swap();
+            if (this.setHelpParty() === 'pause') {
+                main.pause();
+                return;
+            }
             if (window.performance.now() - frameStart > 1000 / 30) {
                 break; // If time for frame is up
             }
         }
         // console.log(`${swapsDone} swaps done this frame`);
+    };
+
+    this.setHelpParty = () => {
+        const numBlueDistricts = this.getScore().get(BLUE);
+        const helpPartyBefore = ps.HELP_PARTY;
+        if (numBlueDistricts === ps.TARGET_NUM_BLUE_DISTRICTS) {
+            return 'pause';
+        }
+        ps.HELP_PARTY = (numBlueDistricts < ps.TARGET_NUM_BLUE_DISTRICTS) ? BLUE : RED;
+        if (!helpPartyBefore.equalTo(ps.HELP_PARTY)) { // If changed
+            for (const district of this.districts) {
+                district.netAdvantage *= -1;
+            }
+            ps.setHinderParty();
+        }
+        return 'good';
     };
 
     this.draw = () => {

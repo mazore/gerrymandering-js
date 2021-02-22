@@ -1,14 +1,10 @@
 TODO:
-- drag districts pie charts to control HELP_PARTY, HINDER_PARTY, and FAVOR_TIE
-    - rework swapping (with setInterval)
-- implement districts pie chart dragging with even grid widths (tied districts)
-- maybe combine pie chart constructor functions
-- add percent to pie charts
-- refactor pie charts (2 pie chart classes w/ prototype?, 2 instances?)
+- implement two drag points on districts pie chart to make tied section bigger
 - change getScore (in Simulation) to score Map for optimization
     - change score Map when a person swaps districts
     - only call drawDistrictsPieChart() when a district is flipped
     - only recalculate HELP_PARTY when a district is flipped
+- add percent to pie charts
 - add interface/ui
     - parameter adjusters
     - control panel

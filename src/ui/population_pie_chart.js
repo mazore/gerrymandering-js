@@ -20,7 +20,7 @@ export default class PopulationPieChart extends PieChartBase {
     /** Returns a point in canvas coords that is a point to drag */
     onDragged(percent) {
         ps.PERCENT_RED = percent;
-        ps.STANCE_THRESHOLD = Math.floor(ps.NUM_PEOPLE * ps.PERCENT_RED + 0.5);
+        ps.setStanceThreshold();
         flattened(this.pieCharts.main.simulation.peopleGrid).forEach((person) => {
             person.setParty();
         });
