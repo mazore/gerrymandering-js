@@ -79,6 +79,11 @@ export function increment(map, key, amount = 1) {
     map.set(key, (map.get(key) ?? 0) + amount);
 }
 
+export function roundToMultiple(value, multipleOf) {
+    const factor = Math.round(value / multipleOf);
+    return multipleOf * factor;
+}
+
 /** Shuffle and return the given array, from https://github.com/processing/p5.js/blob/main/src/utilities/array_functions.js#L209 */
 export function shuffled(original) {
     const arr = [...original];

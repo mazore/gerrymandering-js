@@ -105,10 +105,10 @@ export default function Simulation(main) {
     };
 
     this.canvas.addEventListener('mousedown', main.mouseDown);
-    this.canvas.addEventListener('touchstart', (event) => {
-        event.button = 0; // Pretend its a left click
-        main.mouseDown(event);
-    });
+    // this.canvas.addEventListener('touchstart', (event) => {
+    //     event.button = 0; // Pretend its a left click
+    //     main.mouseDown(event);
+    // });
     this.canvas.addEventListener('contextmenu', (event) => { // Right click
         event.preventDefault();
         this.swapManager.swap();

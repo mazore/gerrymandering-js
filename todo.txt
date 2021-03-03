@@ -1,4 +1,7 @@
 TODO:
+- allow panning and zooming on mobile
+- better layout & dynamic
+- implement districts pie chart dragging with even grid widths (tied districts)
 - implement two drag points on districts pie chart to make tied section bigger
 - change getScore (in Simulation) to score Map for optimization
     - change score Map when a person swaps districts
