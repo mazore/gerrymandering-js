@@ -1,5 +1,6 @@
 import PieCharts from './ui/pie_charts.js';
 import Simulation from './simulation.js';
+import Adjusters from './ui/adjusters.js';
 
 function Main() {
     this.update = () => {
@@ -12,24 +13,16 @@ function Main() {
         }
     };
 
-    this.mouseDown = (event) => {
-        if (event.button === 0) { // Left click
-            if (this.requestId == null) { // Start running
-                this.resume();
-            } else { // Stop running
-                this.pause();
-            }
-        }
-    };
+    this.isPaused = () => this.requestId == null;
 
     this.resume = () => {
-        if (this.requestId == null) {
+        if (this.isPaused()) {
             this.requestId = requestAnimationFrame(this.update);
         }
     };
 
     this.pause = () => {
-        if (this.requestId != null) {
+        if (!this.isPaused()) {
             cancelAnimationFrame(this.requestId);
             this.requestId = null;
             this.simulation.draw(); // Because it swaps after drawing every update
@@ -39,6 +32,7 @@ function Main() {
     this.requestId = null;
     this.simulation = new Simulation(this);
     this.pieCharts = new PieCharts(this);
+    this.adjusters = new Adjusters(this);
 }
 
 new Main();

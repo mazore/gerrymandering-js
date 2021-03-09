@@ -6,3 +6,11 @@ html, body {
 canvas {
     display: block;
 }
+
+select {
+    margin: 5px;
+}
+
+label {
+    padding: 5px;
+}

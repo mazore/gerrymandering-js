@@ -13,14 +13,17 @@ export default function Simulation(main) {
     this.canvas = document.getElementById('simulation');
     this.ctx = this.canvas.getContext('2d');
 
-    // Fix blurriness
-    this.canvas.width = ps.SIMULATION_WIDTH * 2;
-    this.canvas.height = ps.SIMULATION_WIDTH * 2;
-    this.canvas.style.width = `${ps.SIMULATION_WIDTH}px`;
-    this.canvas.style.height = `${ps.SIMULATION_WIDTH}px`;
-    this.ctx.scale(2, 2);
+    this.setup = () => {
+        this.setCanvasDimensions(ps.SIMULATION_WIDTH, ps.SIMULATION_WIDTH);
+        this.demographics = new Map([[BLUE, 0], [RED, 0]]);
 
-    this.demographics = new Map([[BLUE, 0], [RED, 0]]);
+        this.generatePeople();
+        this.generateDistricts();
+        for (const person of flattened(this.peopleGrid)) {
+            person.secondaryInit();
+        }
+        this.draw();
+    };
 
     this.generatePeople = () => {
         this.peopleGrid = []; // 2D array of Person objects
@@ -58,6 +61,15 @@ export default function Simulation(main) {
                 districtId += 1;
             }
         }
+    };
+
+    this.setCanvasDimensions = (width, height) => {
+        // Needs to be more complicated to fix blurriness
+        this.canvas.width = width * 2;
+        this.canvas.height = height * 2;
+        this.canvas.style.width = `${width}px`;
+        this.canvas.style.height = `${height}px`;
+        this.ctx.scale(2, 2);
     };
 
     this.update = () => {
@@ -104,17 +116,6 @@ export default function Simulation(main) {
         });
     };
 
-    this.canvas.addEventListener('mousedown', main.mouseDown);
-    // this.canvas.addEventListener('touchstart', (event) => {
-    //     event.button = 0; // Pretend its a left click
-    //     main.mouseDown(event);
-    // });
-    this.canvas.addEventListener('contextmenu', (event) => { // Right click
-        event.preventDefault();
-        this.swapManager.swap();
-        this.draw();
-    });
-
     /** Returns how many district each party has won */
     this.getScore = () => {
         const map = new Map([[BLUE, 0], [RED, 0], [TIE, 0]]);
@@ -125,10 +126,5 @@ export default function Simulation(main) {
         return map;
     };
 
-    this.generatePeople();
-    this.generateDistricts();
-    for (const person of flattened(this.peopleGrid)) {
-        person.secondaryInit();
-    }
-    this.draw();
+    this.setup();
 }

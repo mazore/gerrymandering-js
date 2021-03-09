@@ -1,5 +1,5 @@
-import { flattened } from '../helpers/functions.js';
-import ps from '../parameters.js';
+import { flattened } from '../../helpers/functions.js';
+import ps from '../../parameters.js';
 import PieChartBase from './pie_chart_base.js';
 
 export default class PopulationPieChart extends PieChartBase {
@@ -9,7 +9,7 @@ export default class PopulationPieChart extends PieChartBase {
         const getScore = () => pieCharts.main.simulation.demographics;
         const left = 0;
         const name = 'Population';
-        const quantity = ps.NUM_PEOPLE;
+        const quantity = () => ps.NUM_PEOPLE;
         const options = { drawTiedCircle: false };
 
         super(pieCharts, centerX, getDragPointPercent, getScore, left, name, quantity, options);

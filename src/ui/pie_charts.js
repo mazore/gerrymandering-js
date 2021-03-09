@@ -1,5 +1,5 @@
-import DistrictsPieChart from './districts_pie_chart.js';
-import PopulationPieChart from './population_pie_chart.js';
+import DistrictsPieChart from './pie_charts/districts_pie_chart.js';
+import PopulationPieChart from './pie_charts/population_pie_chart.js';
 
 export default function PieCharts(main) {
     this.main = main;

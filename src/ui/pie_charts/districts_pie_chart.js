@@ -1,6 +1,6 @@
-import ps from '../parameters.js';
+import ps from '../../parameters.js';
 import PieChartBase from './pie_chart_base.js';
-import { BLUE } from '../parties.js';
+import { BLUE } from '../../parties.js';
 
 export default class DistrictsPieChart extends PieChartBase {
     constructor(pieCharts) {
@@ -9,7 +9,7 @@ export default class DistrictsPieChart extends PieChartBase {
         const { getScore } = pieCharts.main.simulation;
         const left = pieCharts.width / 2;
         const name = 'Districts';
-        const quantity = ps.NUM_DISTRICTS;
+        const quantity = () => ps.NUM_DISTRICTS;
 
         super(pieCharts, centerX, getDragPointPercent, getScore, left, name, quantity, {});
 

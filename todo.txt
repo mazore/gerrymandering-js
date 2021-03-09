@@ -1,5 +1,7 @@
 TODO:
-- allow panning and zooming on mobile
+- fix drag point problems when canvas width changed because grid width changed
+- set target districts based on start pie chart
+- allow panning and zooming on mobile (better controls)
 - better layout & dynamic
 - implement districts pie chart dragging with even grid widths (tied districts)
 - implement two drag points on districts pie chart to make tied section bigger

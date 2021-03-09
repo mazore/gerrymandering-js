@@ -1,12 +1,14 @@
 import {
     arc, circle, rect, text,
-} from '../helpers/drawing.js';
-import { distance } from '../helpers/functions.js';
-import { BLUE, RED, TIE } from '../parties.js';
+} from '../../helpers/drawing.js';
+import { distance } from '../../helpers/functions.js';
+import { BLUE, RED, TIE } from '../../parties.js';
 
 /** Stores similar functionality between population and districts pie charts */
 export default class PieChartBase {
-    constructor(pieCharts, centerX, getDragPointPercent, getScore, left, name, quantity, options) {
+    constructor(
+        pieCharts, centerX, getDragPointPercent, getScore, left, name, getQuantity, options,
+    ) {
         this.pieCharts = pieCharts;
         this.dragging = false;
         this.hovering = false;
@@ -16,8 +18,13 @@ export default class PieChartBase {
         this.getScore = getScore;
         this.left = left;
         this.name = name;
-        this.quantity = quantity;
+        this.getQuantity = getQuantity;
+        this.setQuantity();
         this.drawTiedCircle = options.drawTiedCircle ?? true;
+    }
+
+    setQuantity() {
+        this.quantity = this.getQuantity();
     }
 
     draw() {

@@ -16,7 +16,7 @@ import { roundToMultiple } from './helpers/functions.js';
  * @param: SQUARE_WIDTH - Width of a grid square
  */
 function Parameters() {
-    this.SIMULATION_WIDTH = Math.min(window.innerWidth, 480);
+    this.SIMULATION_WIDTH = Math.min(window.innerWidth, 420);
     // this.DISTRICT_SIZE = 25;
     // this.GRID_WIDTH = 25;
     this.DISTRICT_SIZE = 9;
@@ -26,11 +26,14 @@ function Parameters() {
     this.PERCENT_RED = 0.5;
     this.SHOW_MARGINS = false;
 
-    this.NUM_PEOPLE = this.GRID_WIDTH ** 2;
-    this.NUM_DISTRICTS = this.NUM_PEOPLE / this.DISTRICT_SIZE;
-    // Make sure SQUARE_WIDTH is whole
-    this.SIMULATION_WIDTH = roundToMultiple(this.SIMULATION_WIDTH, this.GRID_WIDTH);
-    this.SQUARE_WIDTH = this.SIMULATION_WIDTH / this.GRID_WIDTH;
+    this.computeProperties = () => {
+        this.NUM_PEOPLE = this.GRID_WIDTH ** 2;
+        this.NUM_DISTRICTS = this.NUM_PEOPLE / this.DISTRICT_SIZE;
+        // Make sure SQUARE_WIDTH is whole
+        this.SIMULATION_WIDTH = roundToMultiple(this.SIMULATION_WIDTH, this.GRID_WIDTH);
+        this.SQUARE_WIDTH = this.SIMULATION_WIDTH / this.GRID_WIDTH;
+        this.setHinderParty();
+    };
     this.setHinderParty = () => {
         this.HINDER_PARTY = this.HELP_PARTY.equalTo(RED) ? BLUE : RED;
     };
@@ -41,15 +44,19 @@ function Parameters() {
         const notfloored = this.NUM_DISTRICTS * (1 - percent);
         this.TARGET_NUM_BLUE_DISTRICTS = Math.round(notfloored);
     };
-    this.setHinderParty();
+
+    this.computeProperties();
     this.setStanceThreshold();
     this.setTargetNumBlueDistricts(0.5);
 
-    if (!Number.isInteger(Math.sqrt(this.DISTRICT_SIZE))) {
-        throw new Error('districts start as squares, district_size must be a perfect square');
-    }
-    if (!Number.isInteger(Math.sqrt(this.NUM_DISTRICTS))) {
-        throw new Error('districts must be able to fit into the grid without remainders');
-    }
+    this.validate = () => {
+        if (!Number.isInteger(Math.sqrt(this.DISTRICT_SIZE))) {
+            throw new Error('districts start as squares, district_size must be a perfect square');
+        }
+        if (!Number.isInteger(Math.sqrt(this.NUM_DISTRICTS))) {
+            throw new Error('districts must be able to fit into the grid without remainders');
+        }
+    };
+    this.validate();
 }
 export default new Parameters();
