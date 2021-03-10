@@ -35,9 +35,6 @@ export default class ParamterAdjusterBase {
 
         const { simulation, pieCharts } = this.adjusters.main;
         simulation.setup();
-        pieCharts.populationPieChart.setQuantity();
-        pieCharts.populationPieChart.draw();
-        pieCharts.districtsPieChart.setQuantity();
-        pieCharts.districtsPieChart.draw();
+        pieCharts.refresh();
     }
 }

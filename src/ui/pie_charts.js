@@ -19,6 +19,14 @@ export default function PieCharts(main) {
     this.canvas.style.height = `${this.height}px`;
     this.ctx.scale(2, 2);
 
+    this.refresh = () => {
+        this.populationPieChart.setQuantity();
+        this.populationPieChart.draw();
+        this.districtsPieChart.setQuantity();
+        this.districtsPieChart.draw();
+        this.left = this.canvas.getBoundingClientRect().left;
+    };
+
     this.mouseDown = (event) => {
         event.preventDefault();
         this.populationPieChart.mouseDown(event);
@@ -54,6 +62,9 @@ export default function PieCharts(main) {
 
     this.canvas.addEventListener('mousedown', this.mouseDown);
     this.canvas.addEventListener('mousemove', this.checkHovering);
+    this.canvas.addEventListener('mouseleave', () => {
+        document.body.style.cursor = 'default';
+    });
     window.addEventListener('mousemove', this.updateDragging);
     window.addEventListener('mouseup', this.mouseUp);
 
