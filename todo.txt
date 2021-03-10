@@ -1,6 +1,6 @@
 TODO:
 - fix drag point problems when canvas width changed because grid width changed
-- set target districts based on start pie chart
+- change "Grid Width" adjuster to "Number of Districts"
 - allow panning and zooming on mobile (better controls)
 - better layout & dynamic
 - implement districts pie chart dragging with even grid widths (tied districts)

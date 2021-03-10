@@ -35,7 +35,7 @@ function Main() {
     this.adjusters = new Adjusters(this);
 }
 
-new Main();
+window.main = new Main();
 // import { speedTest, scoreTest } from './tests.js';
 // speedTest(Main);
 // scoreTest(Main);

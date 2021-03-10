@@ -16,7 +16,7 @@ export default class DistrictsPieChart extends PieChartBase {
         this.draw();
 
         this.onDragged = (percent) => {
-            ps.setTargetNumBlueDistricts(percent);
+            ps.setTargetNumBlueDistricts(1 - percent);
             if (ps.TARGET_NUM_BLUE_DISTRICTS !== pieCharts.main.simulation.getScore().get(BLUE)) {
                 pieCharts.main.resume();
             }

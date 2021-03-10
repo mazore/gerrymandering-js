@@ -33,6 +33,7 @@ function Parameters() {
         this.SIMULATION_WIDTH = roundToMultiple(this.SIMULATION_WIDTH, this.GRID_WIDTH);
         this.SQUARE_WIDTH = this.SIMULATION_WIDTH / this.GRID_WIDTH;
         this.setHinderParty();
+        this.setStanceThreshold();
     };
     this.setHinderParty = () => {
         this.HINDER_PARTY = this.HELP_PARTY.equalTo(RED) ? BLUE : RED;
@@ -41,13 +42,17 @@ function Parameters() {
         this.STANCE_THRESHOLD = Math.floor(this.NUM_PEOPLE * this.PERCENT_RED + 0.5);
     };
     this.setTargetNumBlueDistricts = (percent) => {
-        const notfloored = this.NUM_DISTRICTS * (1 - percent);
-        this.TARGET_NUM_BLUE_DISTRICTS = Math.round(notfloored);
+        const notRounded = this.NUM_DISTRICTS * percent;
+        this.TARGET_NUM_BLUE_DISTRICTS = Math.round(notRounded);
+    };
+    /** Sets target number of blue districts based on simulation */
+    this.defaultTargetNumBlueDistricts = (simulation) => {
+        const score = simulation.getScore();
+        const percent = score.get(BLUE) / this.NUM_DISTRICTS;
+        this.setTargetNumBlueDistricts(percent);
     };
 
     this.computeProperties();
-    this.setStanceThreshold();
-    this.setTargetNumBlueDistricts(0.5);
 
     this.validate = () => {
         if (!Number.isInteger(Math.sqrt(this.DISTRICT_SIZE))) {

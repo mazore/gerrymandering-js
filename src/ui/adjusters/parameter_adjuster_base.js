@@ -31,12 +31,13 @@ export default class ParamterAdjusterBase {
         ps[this.parameterName] = parseInt(this.get(), 10);
         ps.computeProperties();
         ps.setStanceThreshold();
-        ps.setTargetNumBlueDistricts(0.5);
         this.afterChoice();
-        this.adjusters.main.simulation.setup();
-        this.adjusters.main.pieCharts.populationPieChart.setQuantity();
-        this.adjusters.main.pieCharts.populationPieChart.draw();
-        this.adjusters.main.pieCharts.districtsPieChart.setQuantity();
-        this.adjusters.main.pieCharts.districtsPieChart.draw();
+
+        const { simulation, pieCharts } = this.adjusters.main;
+        simulation.setup();
+        pieCharts.populationPieChart.setQuantity();
+        pieCharts.populationPieChart.draw();
+        pieCharts.districtsPieChart.setQuantity();
+        pieCharts.districtsPieChart.draw();
     }
 }

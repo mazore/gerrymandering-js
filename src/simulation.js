@@ -22,6 +22,7 @@ export default function Simulation(main) {
         for (const person of flattened(this.peopleGrid)) {
             person.secondaryInit();
         }
+        ps.defaultTargetNumBlueDistricts(this);
         this.draw();
     };
 

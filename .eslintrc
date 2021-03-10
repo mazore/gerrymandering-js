@@ -12,7 +12,6 @@
         "import/extensions": 0, // Need extensions for imports
         "linebreak-style": 0, // Windows line breaks (CRLF)
         "no-continue": 0, // Allow continue statements in for loops
-        "no-new": 0, // Allow creating objects without assinging them (for highest level)
         "no-restricted-syntax": [ // airbnb-base also disallows for..of so allow that
             "error", "ForInStatement", "LabeledStatement", "WithStatement"
         ],
