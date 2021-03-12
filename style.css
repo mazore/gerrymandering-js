@@ -3,6 +3,10 @@ html, body {
     padding: 0;
 }
 
+*:focus {
+    outline: none;
+}
+
 canvas {
     display: block;
 }
@@ -13,4 +17,18 @@ select {
 
 label {
     padding: 5px;
+}
+
+#stopButton {
+    display: none; /* Hide to start */
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 170px;
+    height: 35px;
+    font-size: 16px;
+}
+
+#stopButton:active {
+    filter: brightness(0.9);
 }

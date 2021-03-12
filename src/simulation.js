@@ -96,6 +96,7 @@ export default function Simulation(main) {
         const numBlueDistricts = this.getScore().get(BLUE);
         const helpPartyBefore = ps.HELP_PARTY;
         if (numBlueDistricts === ps.TARGET_NUM_BLUE_DISTRICTS) {
+            main.stopButton.hide();
             return 'pause';
         }
         ps.HELP_PARTY = (numBlueDistricts < ps.TARGET_NUM_BLUE_DISTRICTS) ? BLUE : RED;
@@ -105,6 +106,7 @@ export default function Simulation(main) {
             }
             ps.setHinderParty();
         }
+        main.stopButton.show();
         return 'good';
     };
 
