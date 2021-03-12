@@ -1,6 +1,6 @@
 import PieCharts from './ui/pie_charts.js';
 import Simulation from './simulation.js';
-import Adjusters from './ui/adjusters.js';
+import ParameterAdjusters from './ui/parameter_adjusters.js';
 
 function Main() {
     this.update = () => {
@@ -32,7 +32,7 @@ function Main() {
     this.requestId = null;
     this.simulation = new Simulation(this);
     this.pieCharts = new PieCharts(this);
-    this.adjusters = new Adjusters(this);
+    this.parameterAdjusters = new ParameterAdjusters(this);
 }
 
 window.main = new Main();

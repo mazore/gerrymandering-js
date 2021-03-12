@@ -24,7 +24,7 @@ export default function PieCharts(main) {
         this.populationPieChart.draw();
         this.districtsPieChart.setQuantity();
         this.districtsPieChart.draw();
-        this.left = this.canvas.getBoundingClientRect().left;
+        this.top = this.canvas.getBoundingClientRect().top;
     };
 
     this.mouseDown = (event) => {

@@ -2,9 +2,10 @@ import { BLUE, RED } from './parties.js';
 import { roundToMultiple } from './helpers/functions.js';
 
 /**
- * @param: SIMULATION_WIDTH - Width and height of simulation in pixels
  * @param: DISTRICT_SIZE - Number of people per district
  * @param: GRID_WIDTH - Width and height of grid of people
+ * @param: MAX_SIMULATION_WIDTH - Maximum of SIMULATION_WIDTH
+ * @param: SIMULATION_WIDTH - Width and height of simulation in pixels
  * @param: HELP_PARTY - Party to help during the gerrymandering process
  * @param: FAVOR_TIE - Whether or not to try to make more tied districts
  * @param: TARGET_NUM_BLUE_DISTRICTS - Target number of districts to be won by blue
@@ -16,23 +17,27 @@ import { roundToMultiple } from './helpers/functions.js';
  * @param: SQUARE_WIDTH - Width of a grid square
  */
 function Parameters() {
-    this.SIMULATION_WIDTH = Math.min(window.innerWidth, 420);
     // this.DISTRICT_SIZE = 25;
     // this.GRID_WIDTH = 25;
+    // this.DISTRICT_SIZE = 16;
+    // this.GRID_WIDTH = 24;
     this.DISTRICT_SIZE = 9;
     this.GRID_WIDTH = 12;
+
+    this.MAX_SIMULATION_WIDTH = 420;
     this.HELP_PARTY = BLUE;
     this.FAVOR_TIE = false;
     this.PERCENT_RED = 0.5;
     this.SHOW_MARGINS = false;
 
-    this.computeProperties = () => {
+    this.onGridWidthSet = () => {
         this.NUM_PEOPLE = this.GRID_WIDTH ** 2;
         this.NUM_DISTRICTS = this.NUM_PEOPLE / this.DISTRICT_SIZE;
-        // Make sure SQUARE_WIDTH is whole
-        this.SIMULATION_WIDTH = roundToMultiple(this.SIMULATION_WIDTH, this.GRID_WIDTH);
+        // Make sure SQUARE_WIDTH is a whole number
+        this.SIMULATION_WIDTH = roundToMultiple(
+            window.innerWidth, this.GRID_WIDTH, this.MAX_SIMULATION_WIDTH,
+        );
         this.SQUARE_WIDTH = this.SIMULATION_WIDTH / this.GRID_WIDTH;
-        this.setHinderParty();
         this.setStanceThreshold();
     };
     this.setHinderParty = () => {
@@ -52,7 +57,8 @@ function Parameters() {
         this.setTargetNumBlueDistricts(percent);
     };
 
-    this.computeProperties();
+    this.onGridWidthSet();
+    this.setHinderParty();
 
     this.validate = () => {
         if (!Number.isInteger(Math.sqrt(this.DISTRICT_SIZE))) {

@@ -79,8 +79,11 @@ export function increment(map, key, amount = 1) {
     map.set(key, (map.get(key) ?? 0) + amount);
 }
 
-export function roundToMultiple(value, multipleOf) {
-    const factor = Math.round(value / multipleOf);
+export function roundToMultiple(value, multipleOf, max = null) {
+    let factor = Math.round(value / multipleOf);
+    while (max !== null && factor * multipleOf > max) {
+        factor -= 1;
+    }
     return multipleOf * factor;
 }
 

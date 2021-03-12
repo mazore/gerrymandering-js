@@ -1,7 +1,7 @@
 import AdjusterBase from './adjuster_base.js';
 import ps from '../../parameters.js';
 
-export default class DistrictSizeAdjuster extends AdjusterBase {
+export default class NumDistrictsAdjuster extends AdjusterBase {
     constructor(adjusters) {
         const choices = [];
         for (let i = 2; i < 10; i += 1) {
@@ -9,11 +9,10 @@ export default class DistrictSizeAdjuster extends AdjusterBase {
         }
 
         const onChange = (event) => {
-            const districtSize = event.target.value;
-            const districtWidth = Math.sqrt(districtSize);
-            const districtsPerRow = Math.sqrt(ps.NUM_DISTRICTS);
+            const numDistricts = event.target.value;
+            const districtWidth = Math.sqrt(ps.DISTRICT_SIZE);
+            const districtsPerRow = Math.sqrt(numDistricts);
 
-            ps.DISTRICT_SIZE = districtSize;
             ps.GRID_WIDTH = districtsPerRow * districtWidth;
             ps.onGridWidthSet();
 
@@ -21,6 +20,6 @@ export default class DistrictSizeAdjuster extends AdjusterBase {
             adjusters.main.pieCharts.refresh();
         };
 
-        super(adjusters, 'districtSize', 'DISTRICT_SIZE', choices, onChange);
+        super(adjusters, 'numDistricts', 'NUM_DISTRICTS', choices, onChange);
     }
 }

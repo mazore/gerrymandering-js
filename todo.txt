@@ -1,13 +1,15 @@
 TODO:
-- change "Grid Width" adjuster to "Number of Districts"
-- allow panning and zooming on mobile (better controls)
-- better layout & dynamic
-- implement districts pie chart dragging with even grid widths (tied districts)
-- implement two drag points on districts pie chart to make tied section bigger
+- "Stop Gerrymandering" button
+- adjusters flash for a little bit on refresh
+- adjuster text postfixes (like "people" or "districts")
 - change getScore (in Simulation) to score Map for optimization
     - change score Map when a person swaps districts
     - only call drawDistrictsPieChart() when a district is flipped
     - only recalculate HELP_PARTY when a district is flipped
+- allow panning and zooming on mobile (better controls)
+- better layout & dynamic
+- implement districts pie chart dragging with even grid widths (tied districts)
+    - implement two drag points on districts pie chart to make tied section bigger
 - add percent to pie charts
 - add interface/ui
     - parameter adjusters
