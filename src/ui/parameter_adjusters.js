@@ -12,4 +12,12 @@ export default function ParameterAdjusters(main) {
     for (const adjuster of adjustersArray) {
         this.adjusterMap.set(adjuster.id, adjuster);
     }
+
+    // Show elements
+    for (const element of document.getElementsByTagName('select')) {
+        element.style.visibility = 'visible';
+    }
+    for (const element of document.getElementsByTagName('label')) {
+        element.style.visibility = 'visible';
+    }
 }

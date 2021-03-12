@@ -12,15 +12,20 @@ canvas {
 }
 
 select {
+    /* Hide before load */
+    visibility: hidden;
     margin: 5px;
 }
 
 label {
+    /* Hide when not gerrymandering */
+    visibility: hidden;
     padding: 5px;
 }
 
 #stopButton {
-    display: none; /* Hide to start */
+    /* Hide when not gerrymandering */
+    visibility: hidden;
     position: absolute;
     left: 5px;
     top: 5px;

@@ -9,14 +9,14 @@ export default function StopButton(main) {
 
     this.show = () => {
         if (!this.shown) {
-            element.style.display = 'block';
+            element.style.visibility = 'visible';
             this.shown = true;
         }
     };
 
     this.hide = () => {
         if (this.shown) {
-            element.style.display = 'none';
+            element.style.visibility = 'hidden';
             this.shown = false;
         }
     };

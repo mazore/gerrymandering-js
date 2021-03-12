@@ -1,5 +1,7 @@
 TODO:
-- adjusters flash for a little bit on refresh
+- icon
+- fonts
+- on population pie chart change, update target blue districts or try to gerrymander to obtain current one
 - adjuster text postfixes (like "people" or "districts")
 - change getScore (in Simulation) to score Map for optimization
     - change score Map when a person swaps districts
