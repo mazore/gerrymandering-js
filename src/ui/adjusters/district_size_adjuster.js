@@ -4,7 +4,7 @@ import ps from '../../parameters.js';
 export default class DistrictSizeAdjuster extends AdjusterBase {
     constructor(adjusters) {
         const choices = [];
-        for (let i = 2; i < 10; i += 1) {
+        for (let i = 3; i < 10; i += 1) {
             choices.push(i * i);
         }
 

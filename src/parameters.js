@@ -34,11 +34,19 @@ function Parameters() {
     this.onGridWidthSet = () => {
         this.NUM_PEOPLE = this.GRID_WIDTH ** 2;
         this.NUM_DISTRICTS = this.NUM_PEOPLE / this.DISTRICT_SIZE;
-        // Make sure SQUARE_WIDTH is a whole number
+
         this.SIMULATION_WIDTH = roundToMultiple(
-            window.innerWidth, this.GRID_WIDTH, this.MAX_SIMULATION_WIDTH,
+            window.innerWidth, this.GRID_WIDTH,
+            Math.min(window.innerWidth, this.MAX_SIMULATION_WIDTH),
         );
+        if (this.SIMULATION_WIDTH > window.innerWidth) {
+            throw new Error('BUG: Simulation width bigger than view width');
+        }
         this.SQUARE_WIDTH = this.SIMULATION_WIDTH / this.GRID_WIDTH;
+        if (!Number.isInteger(this.SQUARE_WIDTH)) {
+            throw new Error('BUG: Square width must be an integer');
+        }
+
         this.setStanceThreshold();
         this.setLineWidth();
     };
@@ -48,7 +56,7 @@ function Parameters() {
     };
     /** Dynamically set line width based on square how big squares are */
     this.setLineWidth = () => {
-        this.LINE_WIDTH = Math.round(this.SQUARE_WIDTH / 10);
+        this.LINE_WIDTH = Math.round(this.SQUARE_WIDTH / 8);
     };
     /** Sets HINDER_PARTY to the opposite of HELP_PARTY */
     this.setHinderParty = () => {
