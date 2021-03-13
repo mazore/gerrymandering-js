@@ -3,6 +3,10 @@ html, body {
     padding: 0;
 }
 
+* {
+    font-family: Poppins;
+}
+
 *:focus {
     outline: none;
 }
@@ -26,10 +30,11 @@ label {
 #stopButton {
     /* Hide when not gerrymandering */
     visibility: hidden;
+    background: white;
     position: absolute;
     left: 5px;
     top: 5px;
-    width: 170px;
+    width: 190px;
     height: 35px;
     font-size: 16px;
 }

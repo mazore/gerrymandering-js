@@ -83,4 +83,9 @@ export default function PieCharts(main) {
 
     this.populationPieChart = new PopulationPieChart(this);
     this.districtsPieChart = new DistrictsPieChart(this);
+
+    document.fonts.onloadingdone = () => { // Redraw when font loaded
+        this.populationPieChart.draw();
+        this.districtsPieChart.draw();
+    };
 }
