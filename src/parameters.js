@@ -11,6 +11,7 @@ import { roundToMultiple } from './helpers/functions.js';
  * @param: TARGET_NUM_BLUE_DISTRICTS - Target number of districts to be won by blue
  * @param: PERCENT_RED - What percentage of people vote red (0 to 1)
  * @param: SHOW_MARGINS - Whether to set district color saturation based on victory margin
+ * @param: LINE_WIDTH - How wide the lines that divide districts are
  *
  * @param: HINDER_PARTY - Party to hinder during the gerrymandering process
  * @param: STANCE_THRESHOLD - Where to divide people's stances, essentially number of red people
@@ -39,13 +40,21 @@ function Parameters() {
         );
         this.SQUARE_WIDTH = this.SIMULATION_WIDTH / this.GRID_WIDTH;
         this.setStanceThreshold();
+        this.setLineWidth();
     };
-    this.setHinderParty = () => {
-        this.HINDER_PARTY = this.HELP_PARTY.equalTo(RED) ? BLUE : RED;
-    };
+    /** Sets the  */
     this.setStanceThreshold = () => {
         this.STANCE_THRESHOLD = Math.floor(this.NUM_PEOPLE * this.PERCENT_RED + 0.5);
     };
+    /** Dynamically set line width based on square how big squares are */
+    this.setLineWidth = () => {
+        this.LINE_WIDTH = Math.round(this.SQUARE_WIDTH / 10);
+    };
+    /** Sets HINDER_PARTY to the opposite of HELP_PARTY */
+    this.setHinderParty = () => {
+        this.HINDER_PARTY = this.HELP_PARTY.equalTo(RED) ? BLUE : RED;
+    };
+    /** Sets the number of blue districts we try to get, based on a percent of all districts */
     this.setTargetNumBlueDistricts = (percent) => {
         const notRounded = this.NUM_DISTRICTS * percent;
         this.TARGET_NUM_BLUE_DISTRICTS = Math.round(notRounded);
@@ -59,6 +68,7 @@ function Parameters() {
 
     this.onGridWidthSet();
     this.setHinderParty();
+    this.setLineWidth();
 
     this.validate = () => {
         if (!Number.isInteger(Math.sqrt(this.DISTRICT_SIZE))) {
