@@ -1,5 +1,4 @@
 TODO:
-- on population pie chart change, update target blue districts or try to gerrymander to obtain current one
 - adjuster text postfixes (like "people" or "districts")
 - dynamic line width
 - change getScore (in Simulation) to score Map for optimization
