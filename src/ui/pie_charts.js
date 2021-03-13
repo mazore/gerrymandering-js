@@ -40,6 +40,9 @@ export default function PieCharts(main) {
         event.preventDefault();
         this.populationPieChart.checkHovering(event);
         this.districtsPieChart.checkHovering(event);
+        if (this.populationPieChart.dragging || this.districtsPieChart.dragging) {
+            return; // Don't set cursor if dragging
+        }
         if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
             document.body.style.cursor = 'grab';
         } else {
