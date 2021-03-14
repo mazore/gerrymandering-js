@@ -6,7 +6,7 @@ export default class DistrictsPieChart extends PieChartBase {
     constructor(pieCharts) {
         const centerX = 300;
         const getDragPointPercent = () => 1 - (ps.TARGET_NUM_BLUE_DISTRICTS / ps.NUM_DISTRICTS);
-        const { getScore } = pieCharts.main.simulation;
+        const getScore = () => pieCharts.main.simulation.score;
         const left = pieCharts.width / 2;
         const name = 'Districts';
         const quantity = () => ps.NUM_DISTRICTS;
@@ -17,7 +17,7 @@ export default class DistrictsPieChart extends PieChartBase {
 
         this.onDragged = (percent) => {
             ps.setTargetNumBlueDistricts(1 - percent);
-            if (ps.TARGET_NUM_BLUE_DISTRICTS !== pieCharts.main.simulation.getScore().get(BLUE)) {
+            if (ps.TARGET_NUM_BLUE_DISTRICTS !== pieCharts.main.simulation.score.get(BLUE)) {
                 pieCharts.main.resume();
             }
         };

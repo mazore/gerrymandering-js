@@ -74,9 +74,16 @@ export function lighten(str, percent) {
     return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
 }
 
-/** Increments the value in `map` at the `key` by `amount` */
+/** Increments the value in `map` at the `key` by `amount` (1 by default) */
 export function increment(map, key, amount = 1) {
     map.set(key, (map.get(key) ?? 0) + amount);
+}
+
+/** Returns either -1, 0, or 1 based on if `val` is <0, 0, or >0 respectively */
+export function normalize(val) {
+    if (val < 0) return -1;
+    if (val > 0) return 1;
+    return 0;
 }
 
 export function roundToMultiple(value, multipleOf, max = null) {

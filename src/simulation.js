@@ -16,11 +16,15 @@ export default function Simulation(main) {
     this.setup = () => {
         this.setCanvasDimensions(ps.SIMULATION_WIDTH, ps.SIMULATION_WIDTH);
         this.demographics = new Map([[BLUE, 0], [RED, 0]]);
+        this.score = new Map([[BLUE, 0], [RED, 0], [TIE, 0]]);
 
         this.generatePeople();
         this.generateDistricts();
         for (const person of flattened(this.peopleGrid)) {
             person.secondaryInit();
+        }
+        for (const district of this.districts) {
+            increment(this.score, district.getWinner());
         }
         ps.defaultTargetNumBlueDistricts(this);
         this.draw();
@@ -93,7 +97,7 @@ export default function Simulation(main) {
     };
 
     this.setHelpParty = () => {
-        const numBlueDistricts = this.getScore().get(BLUE);
+        const numBlueDistricts = this.score.get(BLUE);
         const helpPartyBefore = ps.HELP_PARTY;
         if (numBlueDistricts === ps.TARGET_NUM_BLUE_DISTRICTS) {
             main.stopButton.hide();
@@ -117,16 +121,6 @@ export default function Simulation(main) {
         flattened(this.peopleGrid).forEach((person) => {
             person.draw();
         });
-    };
-
-    /** Returns how many district each party has won */
-    this.getScore = () => {
-        const map = new Map([[BLUE, 0], [RED, 0], [TIE, 0]]);
-        for (const district of this.districts) {
-            const winner = district.getWinner();
-            increment(map, winner);
-        }
-        return map;
     };
 
     this.setup();

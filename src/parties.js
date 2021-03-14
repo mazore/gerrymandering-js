@@ -6,6 +6,7 @@ function Party(name, color) {
     this.color2 = lighten(color, 0.7); // District color, lighter
 
     this.equalTo = (other) => this.name === other.name;
+    this.netAdvantage = (ps) => (this.equalTo(ps.HELP_PARTY) ? 1 : -1);
 }
 
 export const BLUE = new Party('blue', 'rgb(88, 104, 170)');

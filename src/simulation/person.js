@@ -64,13 +64,13 @@ export default function Person(simulation, id, gridX, gridY, stance) {
         const before = this.party;
         this.party = this.stance < ps.STANCE_THRESHOLD ? RED : BLUE;
         if (typeof before === 'undefined') { // For initialization
-            this.district.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
+            this.district.netAdvantage += this.party.netAdvantage(ps);
             increment(simulation.demographics, this.party);
             return;
         }
         if (!this.party.equalTo(before)) {
-            this.district.netAdvantage -= before.equalTo(ps.HELP_PARTY) ? 1 : -1;
-            this.district.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
+            this.district.netAdvantage -= before.netAdvantage(ps);
+            this.district.netAdvantage += this.party.netAdvantage(ps);
             increment(simulation.demographics, before, -1);
             increment(simulation.demographics, this.party);
         }
@@ -129,9 +129,9 @@ export default function Person(simulation, id, gridX, gridY, stance) {
     /** Change which district this person belongs to, does not change location or party */
     this.changeDistricts = (destination) => {
         this.district.people.splice(this.district.people.indexOf(this), 1);
-        this.district.netAdvantage -= this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
+        this.district.netAdvantage -= this.party.netAdvantage(ps);
         destination.people.push(this);
-        destination.netAdvantage += this.party.equalTo(ps.HELP_PARTY) ? 1 : -1;
+        destination.netAdvantage += this.party.netAdvantage(ps);
         this.district = destination;
     };
 }

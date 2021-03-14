@@ -31,7 +31,7 @@ export function scoreTest(Main) {
         for (let j = 0; j < 1000; j += 1) {
             main.simulation.swapManager.swap();
         }
-        scoreSum += main.simulation.getScore().get(BLUE);
+        scoreSum += main.simulation.score.get(BLUE);
 
         if (i % 100 === 0) {
             console.log(`${i / 10}% done`);

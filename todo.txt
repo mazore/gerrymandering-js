@@ -1,6 +1,6 @@
 TODO:
 - change getScore (in Simulation) to score Map for optimization
-    - change score Map when a person swaps districts
+    - allow population pie chart changing
     - only call drawDistrictsPieChart() when a district is flipped
     - only recalculate HELP_PARTY when a district is flipped
 - add timeout for swap manager restarting (sometimes stalls for 9 & 4)

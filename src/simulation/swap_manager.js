@@ -1,6 +1,9 @@
 /** Manages the swapping of two people between districts. See readme for more information */
-import { containsObject, shuffled, weightedChoice } from '../helpers/functions.js';
+import {
+    containsObject, increment, normalize, shuffled, weightedChoice,
+} from '../helpers/functions.js';
 import ps from '../parameters.js';
+import { TIE } from '../parties.js';
 
 export default function SwapManager(simulation) {
     this.swapsDone = 0;
@@ -16,6 +19,8 @@ export default function SwapManager(simulation) {
             this.getPerson1();
             if (this.getPerson2() !== 'restart') break;
         }
+
+        this.updateScore();
 
         this.person1.changeDistricts(this.district2);
         this.person2.changeDistricts(this.district1);
@@ -123,5 +128,57 @@ export default function SwapManager(simulation) {
             return false;
         }
         return true;
+    };
+
+    /**
+     * Called right before swapping, after people and districts are picked. Updates `simulation`s
+     * `score` map depending on if districts are flipping parties.
+     * */
+    this.updateScore = () => {
+        const swapInfo1 = this.getSwapInfo(this.district1, this.person1.party, this.person2.party);
+        const swapInfo2 = this.getSwapInfo(this.district2, this.person2.party, this.person1.party);
+
+        if (swapInfo1.winnerChange + swapInfo2.winnerChange === 0) {
+            // If no score change, use + because they can cancel out which wouldn't change score
+            return false;
+        }
+        if (swapInfo1.winnerChange !== 0 && swapInfo2.winnerChange !== 0) {
+            throw new Error('BUG: Two districts have non-cancelling winner changes');
+        }
+
+        const changedSwapInfo = swapInfo1.winnerChange !== 0 ? swapInfo1 : swapInfo2;
+        increment(simulation.score, changedSwapInfo.partyToLosePoint, -1);
+        increment(simulation.score, changedSwapInfo.partyToGainPoint, 1);
+
+        return true;
+    };
+
+    /**
+     * Returns info about what `district` will be like after the swap. Result object contains
+     * `newNetAdvantage` - netAdvantage of `district` after the swap, `winnerChange` - non zero if
+     * the winner of `district` changes, if `winnerChange` isn't zero, `partyToGainPoint` and
+     * `partyToLosePoint` are parties that will gain and lose points respectively.
+     */
+    this.getSwapInfo = (district, giveParty, getParty) => {
+        const result = {};
+
+        result.newNetAdvantage = district.netAdvantage;
+        result.newNetAdvantage -= giveParty.netAdvantage(ps);
+        result.newNetAdvantage += getParty.netAdvantage(ps);
+
+        result.winnerChange = normalize(district.netAdvantage) - normalize(result.newNetAdvantage);
+
+        if (result.winnerChange !== 0) { // If the winner will change
+            result.partyToLosePoint = district.getWinner();
+            if (result.newNetAdvantage > 0) {
+                result.partyToGainPoint = ps.HELP_PARTY;
+            } else if (result.newNetAdvantage < 0) {
+                result.partyToGainPoint = ps.HINDER_PARTY;
+            } else {
+                result.partyToGainPoint = TIE;
+            }
+        }
+
+        return result;
     };
 }

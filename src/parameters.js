@@ -20,10 +20,10 @@ import { roundToMultiple } from './helpers/functions.js';
 function Parameters() {
     // this.DISTRICT_SIZE = 25;
     // this.GRID_WIDTH = 25;
-    // this.DISTRICT_SIZE = 16;
-    // this.GRID_WIDTH = 24;
-    this.DISTRICT_SIZE = 9;
-    this.GRID_WIDTH = 12;
+    this.DISTRICT_SIZE = 16;
+    this.GRID_WIDTH = 24;
+    // this.DISTRICT_SIZE = 9;
+    // this.GRID_WIDTH = 12;
 
     this.MAX_SIMULATION_WIDTH = 420;
     this.HELP_PARTY = BLUE;
@@ -69,8 +69,7 @@ function Parameters() {
     };
     /** Sets target number of blue districts based on simulation */
     this.defaultTargetNumBlueDistricts = (simulation) => {
-        const score = simulation.getScore();
-        const percent = score.get(BLUE) / this.NUM_DISTRICTS;
+        const percent = simulation.score.get(BLUE) / this.NUM_DISTRICTS;
         this.setTargetNumBlueDistricts(percent);
     };
 

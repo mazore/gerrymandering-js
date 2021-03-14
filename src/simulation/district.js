@@ -63,18 +63,14 @@ export default function District(simulation, id, gridX1, gridY1, gridX2, gridY2)
         }
     };
 
+    this.tied = () => this.netAdvantage === 0;
+
     this.getWinner = () => {
         if (this.tied()) {
             return TIE;
         }
         return this.netAdvantage > 0 ? ps.HELP_PARTY : ps.HINDER_PARTY;
     };
-
-    // Object.defineProperties(this, {
-    //     tied: { get() { return this.netAdvantage === 0; } },
-    // });
-
-    this.tied = () => this.netAdvantage === 0;
 
     /** Returns which party this district prioritizes swapping to another district (giving away) */
     this.idealGiveAway = () => {
