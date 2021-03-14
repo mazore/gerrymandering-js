@@ -96,6 +96,15 @@ export default function Simulation(main) {
         // console.log(`${swapsDone} swaps done this frame`);
     };
 
+    this.draw = () => {
+        this.districts.forEach((district) => {
+            district.draw();
+        });
+        flattened(this.peopleGrid).forEach((person) => {
+            person.draw();
+        });
+    };
+
     this.setHelpParty = () => {
         const numBlueDistricts = this.score.get(BLUE);
         const helpPartyBefore = ps.HELP_PARTY;
@@ -114,13 +123,13 @@ export default function Simulation(main) {
         return 'good';
     };
 
-    this.draw = () => {
-        this.districts.forEach((district) => {
-            district.draw();
-        });
-        flattened(this.peopleGrid).forEach((person) => {
-            person.draw();
-        });
+    /** Sets score map by looping through districts. It is slow so shouldn't be used often */
+    this.manuallySetScore = () => {
+        this.score = new Map([[BLUE, 0], [RED, 0], [TIE, 0]]);
+        for (const district of this.districts) {
+            const winner = district.getWinner();
+            increment(this.score, winner);
+        }
     };
 
     this.setup();

@@ -25,14 +25,11 @@ export default class PopulationPieChart extends PieChartBase {
             person.setParty();
         });
 
-        this.pieCharts.districtsPieChart.draw();
-        this.pieCharts.main.simulation.draw();
+        this.pieCharts.main.simulation.manuallySetScore();
 
         ps.defaultTargetNumBlueDistricts(this.pieCharts.main.simulation);
 
-        // This would make it gerrymander to keep target districts when this pie chart dragged
-        // if (this.pieCharts.main.simulation.setHelpParty() === 'good') {
-        //     this.pieCharts.main.resume();
-        // }
+        this.pieCharts.districtsPieChart.draw();
+        this.pieCharts.main.simulation.draw();
     }
 }
