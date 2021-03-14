@@ -55,9 +55,10 @@ export default function Person(simulation, id, gridX, gridY, stance) {
     };
 
     this.draw = () => {
-        const w = ps.SQUARE_WIDTH * 0.175;
-        const offset = ps.SQUARE_WIDTH / 2 - w;
-        rect(simulation.ctx, this.x + offset, this.y + offset, w * 2, w * 2, this.party.color1);
+        const radius = ps.SQUARE_WIDTH * 0.175;
+        const offset = ps.SQUARE_WIDTH / 2 - radius;
+        const w = radius * 2;
+        rect(simulation.ctx, this.x + offset, this.y + offset, w, w, this.party.color1);
     };
 
     this.setParty = () => {

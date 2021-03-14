@@ -3,6 +3,7 @@ TODO:
     - allow population pie chart changing
     - only call drawDistrictsPieChart() when a district is flipped
     - only recalculate HELP_PARTY when a district is flipped
+- pie charts drag with page scroll
 - add timeout for swap manager restarting (sometimes stalls for 9 & 4)
 - speed up big grids (81x81) that only do one swap per draw (even though swap time is small but drawing takes long)
 - allow panning and zooming on mobile

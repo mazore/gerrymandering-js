@@ -33,8 +33,10 @@ export default function District(simulation, id, gridX1, gridY1, gridX2, gridY2)
             const factor = (Math.abs(this.netAdvantage) / ps.DISTRICT_SIZE) * 1.5;
             color = lighten(color, 0.75 - factor);
         }
+        const w = Math.ceil(ps.SQUARE_WIDTH);
         for (const person of this.people) {
-            rect(simulation.ctx, person.x, person.y, ps.SQUARE_WIDTH, ps.SQUARE_WIDTH, color);
+            const { round } = Math;
+            rect(simulation.ctx, round(person.x), round(person.y), w, w, color);
         }
 
         // Outline
@@ -54,10 +56,13 @@ export default function District(simulation, id, gridX1, gridY1, gridX2, gridY2)
             if (occurrence === 1) {
                 const [gridX, gridY, dir] = edge.split(',');
                 const [x, y] = [gridX * ps.SQUARE_WIDTH, gridY * ps.SQUARE_WIDTH];
+                const rnd = Math.round;
                 if (dir === 'n') {
-                    line(simulation.ctx, x, y, x + ps.SQUARE_WIDTH, y, '#000', ps.LINE_WIDTH);
+                    const coords = [rnd(x), rnd(y), rnd(x + ps.SQUARE_WIDTH), rnd(y)];
+                    line(simulation.ctx, ...coords, '#000', ps.LINE_WIDTH);
                 } else if (dir === 'w') {
-                    line(simulation.ctx, x, y, x, y + ps.SQUARE_WIDTH, '#000', ps.LINE_WIDTH);
+                    const coords = [rnd(x), rnd(y), rnd(x), rnd(y + ps.SQUARE_WIDTH)];
+                    line(simulation.ctx, ...coords, '#000', ps.LINE_WIDTH);
                 }
             }
         }

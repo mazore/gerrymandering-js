@@ -86,14 +86,6 @@ export function normalize(val) {
     return 0;
 }
 
-export function roundToMultiple(value, multipleOf, max = null) {
-    let factor = Math.round(value / multipleOf);
-    while (max !== null && factor * multipleOf > max) {
-        factor -= 1;
-    }
-    return multipleOf * factor;
-}
-
 /** Shuffle and return the given array, from https://github.com/processing/p5.js/blob/main/src/utilities/array_functions.js#L209 */
 export function shuffled(original) {
     const arr = [...original];

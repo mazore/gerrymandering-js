@@ -139,13 +139,10 @@ export default function SwapManager(simulation) {
         const swapInfo2 = this.getSwapInfo(this.district2, this.person2.party, this.person1.party);
 
         if (swapInfo1.winnerChange + swapInfo2.winnerChange === 0) {
-            // If no score change, use + because they can cancel out which wouldn't change score
+            // If no score change, and use + because they can cancel out which wouldn't change score
             return false;
         }
-        if (swapInfo1.winnerChange !== 0 && swapInfo2.winnerChange !== 0) {
-            throw new Error('BUG: Two districts have non-cancelling winner changes');
-        }
-
+        // Now we know that only one winner change is non-zero because they don't cancel
         const changedSwapInfo = swapInfo1.winnerChange !== 0 ? swapInfo1 : swapInfo2;
         increment(simulation.score, changedSwapInfo.partyToLosePoint, -1);
         increment(simulation.score, changedSwapInfo.partyToGainPoint, 1);

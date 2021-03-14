@@ -1,5 +1,4 @@
 import { BLUE, RED } from './parties.js';
-import { roundToMultiple } from './helpers/functions.js';
 
 /**
  * @param: DISTRICT_SIZE - Number of people per district
@@ -20,12 +19,12 @@ import { roundToMultiple } from './helpers/functions.js';
 function Parameters() {
     // this.DISTRICT_SIZE = 25;
     // this.GRID_WIDTH = 25;
-    this.DISTRICT_SIZE = 16;
-    this.GRID_WIDTH = 24;
-    // this.DISTRICT_SIZE = 9;
-    // this.GRID_WIDTH = 12;
+    // this.DISTRICT_SIZE = 16;
+    // this.GRID_WIDTH = 24;
+    this.DISTRICT_SIZE = 9;
+    this.GRID_WIDTH = 12;
 
-    this.MAX_SIMULATION_WIDTH = 420;
+    this.MAX_SIMULATION_WIDTH = 432;
     this.HELP_PARTY = BLUE;
     this.FAVOR_TIE = false;
     this.PERCENT_RED = 0.5;
@@ -35,17 +34,8 @@ function Parameters() {
         this.NUM_PEOPLE = this.GRID_WIDTH ** 2;
         this.NUM_DISTRICTS = this.NUM_PEOPLE / this.DISTRICT_SIZE;
 
-        this.SIMULATION_WIDTH = roundToMultiple(
-            window.innerWidth, this.GRID_WIDTH,
-            Math.min(window.innerWidth, this.MAX_SIMULATION_WIDTH),
-        );
-        if (this.SIMULATION_WIDTH > window.innerWidth) {
-            throw new Error('BUG: Simulation width bigger than view width');
-        }
+        this.SIMULATION_WIDTH = Math.min(window.innerWidth, this.MAX_SIMULATION_WIDTH);
         this.SQUARE_WIDTH = this.SIMULATION_WIDTH / this.GRID_WIDTH;
-        if (!Number.isInteger(this.SQUARE_WIDTH)) {
-            throw new Error('BUG: Square width must be an integer');
-        }
 
         this.setStanceThreshold();
         this.setLineWidth();
