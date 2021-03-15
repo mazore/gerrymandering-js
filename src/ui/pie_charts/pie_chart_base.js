@@ -74,7 +74,7 @@ export default class PieChartBase {
 
     checkHovering(event) {
         const [x, y] = this.getDragPoint();
-        if (distance(x, y + this.pieCharts.top, event.x, event.y, 15)) {
+        if (distance(x, y + this.pieCharts.getTop(), event.x, event.y, 15)) {
             this.hovering = true;
         } else {
             this.hovering = false;
@@ -83,8 +83,8 @@ export default class PieChartBase {
 
     updateDragging(event) {
         if (this.dragging) {
-            const dx = this.pieCharts.left - this.centerX + event.x;
-            const dy = this.pieCharts.top + this.pieCharts.centerY - event.y;
+            const dx = event.x - this.centerX;
+            const dy = this.pieCharts.getTop() + this.pieCharts.centerY - event.y;
             let angle = Math.atan2(dx, dy);
             if (angle < 0) angle += Math.PI * 2; // Ensure 0 to 2pi
             const percent = angle / (Math.PI * 2);

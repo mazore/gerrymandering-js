@@ -10,7 +10,7 @@ export default function PieCharts(main) {
     this.canvas = document.getElementById('piecharts');
     this.ctx = this.canvas.getContext('2d');
     this.left = this.canvas.getBoundingClientRect().left;
-    this.top = this.canvas.getBoundingClientRect().top;
+    this.getTop = () => this.canvas.getBoundingClientRect().top;
 
     // Fix blurriness
     this.canvas.width = this.width * 2;
@@ -24,7 +24,6 @@ export default function PieCharts(main) {
         this.populationPieChart.draw();
         this.districtsPieChart.setQuantity();
         this.districtsPieChart.draw();
-        this.top = this.canvas.getBoundingClientRect().top;
     };
 
     this.mouseDown = (event) => {
