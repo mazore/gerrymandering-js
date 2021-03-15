@@ -75,6 +75,7 @@ export default function Simulation(main) {
         this.canvas.style.width = `${width}px`;
         this.canvas.style.height = `${height}px`;
         this.ctx.scale(2, 2);
+        this.ctx.lineCap = 'square';
     };
 
     this.update = () => {
@@ -86,6 +87,7 @@ export default function Simulation(main) {
         for (swapsDone = 0; ; swapsDone += 1) {
             this.swapManager.swap();
             if (this.setHelpParty() === 'pause') {
+                main.stopButton.hide();
                 main.pause();
                 return;
             }
@@ -94,6 +96,8 @@ export default function Simulation(main) {
             }
         }
         // console.log(`${swapsDone} swaps done this frame`);
+
+        main.stopButton.show(); // We know we are still gerrymandering
     };
 
     this.draw = () => {
@@ -109,7 +113,6 @@ export default function Simulation(main) {
         const numBlueDistricts = this.score.get(BLUE);
         const helpPartyBefore = ps.HELP_PARTY;
         if (numBlueDistricts === ps.TARGET_NUM_BLUE_DISTRICTS) {
-            main.stopButton.hide();
             return 'pause';
         }
         ps.HELP_PARTY = (numBlueDistricts < ps.TARGET_NUM_BLUE_DISTRICTS) ? BLUE : RED;
@@ -119,7 +122,6 @@ export default function Simulation(main) {
             }
             ps.setHinderParty();
         }
-        main.stopButton.show();
         return 'good';
     };
 

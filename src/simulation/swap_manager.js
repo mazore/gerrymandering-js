@@ -103,7 +103,7 @@ export default function SwapManager(simulation) {
         while (true) {
             const choice = weightedChoice([...districtWeightMap.entries()]);
             yield choice;
-            delete districtWeightMap.choice;
+            districtWeightMap.delete(choice);
         }
     };
 
@@ -140,14 +140,13 @@ export default function SwapManager(simulation) {
 
         if (swapInfo1.winnerChange + swapInfo2.winnerChange === 0) {
             // If no score change, and use + because they can cancel out which wouldn't change score
-            return false;
+            return;
         }
+        // Score will change
         // Now we know that only one winner change is non-zero because they don't cancel
         const changedSwapInfo = swapInfo1.winnerChange !== 0 ? swapInfo1 : swapInfo2;
         increment(simulation.score, changedSwapInfo.partyToLosePoint, -1);
         increment(simulation.score, changedSwapInfo.partyToGainPoint, 1);
-
-        return true;
     };
 
     /**

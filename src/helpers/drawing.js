@@ -1,5 +1,4 @@
 export function line(ctx, x1, y1, x2, y2, color, width = 1) {
-    ctx.lineCap = 'square';
     ctx.lineWidth = width;
     ctx.strokeStyle = color;
     ctx.beginPath();

@@ -1,18 +1,18 @@
 TODO:
-- change getScore (in Simulation) to score Map for optimization
-    - only call drawDistrictsPieChart() when a district is flipped
-    - only recalculate HELP_PARTY when a district is flipped
+- change selects to sliders
 - pie charts drag with page scroll
+- fix stop button for mobile
 - add timeout for swap manager restarting (sometimes stalls for 9 & 4)
 - speed up big grids (81x81) that only do one swap per draw (even though swap time is small but drawing takes long)
 - allow panning and zooming on mobile
-- fix stop button, selects (change to sliders?) for mobile
 - better layout & dynamic (centered, title, etc.)
 - buttons for new grid, hide districts, show margins, hide people
+- add help/explanation
+- change pie charts to sliders?
 - implement districts pie chart dragging with even grid widths (tied districts)
     - implement two drag points on districts pie chart to make tied section bigger
-- add percent to pie charts
-- when all red districts are high margin, pick one to try to flip
+- add percent to pie charts (on hover?)
 - district hover information
-- speed up simulation drawing
+- when all red districts are high margin, pick one to try to flip
+- speed up simulation drawing more
 - experiment with trying to keep big districts more cohesive/clumped/less strung out
