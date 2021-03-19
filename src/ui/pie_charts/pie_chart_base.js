@@ -21,6 +21,7 @@ export default class PieChartBase {
         this.getQuantity = getQuantity;
         this.setQuantity();
         this.drawTiedCircle = options.drawTiedCircle ?? true;
+        this.dragPointRadius = 5;
     }
 
     setQuantity() {
@@ -43,7 +44,7 @@ export default class PieChartBase {
         this.drawPieSlice(BLUE, score);
         this.drawPieSlice(RED, score);
 
-        circle(ctx, ...this.getDragPoint(), 5, '#ffff88', true); // Drag point
+        circle(ctx, ...this.getDragPoint(), this.dragPointRadius, '#ffff88', true); // Drag point
     }
 
     /** Helper function that draws a filled arc for a party */

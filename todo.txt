@@ -1,5 +1,4 @@
 TODO:
-- flashing district pie chart drag point for clarity
 - change selects to sliders
 - fix stop button for mobile
 - add timeout for swap manager restarting (sometimes stalls for 9 & 4)
