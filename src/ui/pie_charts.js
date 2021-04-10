@@ -27,7 +27,7 @@ export default function PieCharts(main) {
     };
 
     this.mouseDown = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         this.populationPieChart.mouseDown(event);
         this.districtsPieChart.mouseDown(event);
         if (this.populationPieChart.hovering || this.districtsPieChart.hovering) {
@@ -36,7 +36,7 @@ export default function PieCharts(main) {
     };
 
     this.checkHovering = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         this.populationPieChart.checkHovering(event);
         this.districtsPieChart.checkHovering(event);
         if (this.populationPieChart.dragging || this.districtsPieChart.dragging) {
@@ -50,18 +50,19 @@ export default function PieCharts(main) {
     };
 
     this.updateDragging = (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         this.populationPieChart.updateDragging(event);
         this.districtsPieChart.updateDragging(event);
     };
 
-    this.mouseUp = (event) => {
-        event.preventDefault();
+    this.mouseUp = () => {
+        // event.preventDefault();
         this.populationPieChart.dragging = false;
         this.districtsPieChart.dragging = false;
         document.body.style.cursor = 'default';
     };
 
+    // Mouse methods
     this.canvas.addEventListener('mousedown', this.mouseDown);
     this.canvas.addEventListener('mousemove', this.checkHovering);
     this.canvas.addEventListener('mouseleave', () => {
@@ -70,6 +71,7 @@ export default function PieCharts(main) {
     window.addEventListener('mousemove', this.updateDragging);
     window.addEventListener('mouseup', this.mouseUp);
 
+    // Touch screen methods
     const addTouchFunc = (eventName, funcName) => {
         window.addEventListener(eventName, (event) => {
             if (event.touches.length === 1) {

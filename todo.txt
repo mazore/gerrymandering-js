@@ -1,5 +1,4 @@
 TODO:
-- change selects to sliders
 - fix stop button for mobile
 - add timeout for swap manager restarting (sometimes stalls for 9 & 4)
 - speed up big grids (81x81) that only do one swap per draw (even though swap time is small but drawing takes long)

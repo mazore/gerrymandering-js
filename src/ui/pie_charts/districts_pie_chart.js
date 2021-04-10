@@ -1,4 +1,3 @@
-import { getRGB } from '../../helpers/functions.js';
 import ps from '../../parameters.js';
 import PieChartBase from './pie_chart_base.js';
 import { BLUE } from '../../parties.js';
@@ -21,14 +20,13 @@ export default class DistrictsPieChart extends PieChartBase {
             if (ps.TARGET_NUM_BLUE_DISTRICTS !== pieCharts.main.simulation.score.get(BLUE)) {
                 pieCharts.main.resume();
             }
-
-            if (this.pulseInterval !== null) {
-                clearInterval(this.pulseInterval);
-                this.pulseInterval = null;
-                this.dragPointRadius = 5;
-            }
         };
 
+        this.setupPulse();
+    }
+
+    /** Drag point pulses in size before the user clicks to guide them to interact */
+    setupPulse() {
         this.pulseVelocity = 0.1;
         this.pulseDragPoint = () => {
             this.dragPointRadius += this.pulseVelocity;
@@ -38,5 +36,14 @@ export default class DistrictsPieChart extends PieChartBase {
             this.draw();
         };
         this.pulseInterval = setInterval(this.pulseDragPoint, 10);
+
+        this.onMouseDown = () => {
+            if (this.pulseInterval !== null) {
+                clearInterval(this.pulseInterval);
+                this.pulseInterval = null;
+                this.dragPointRadius = 5;
+                this.draw();
+            }
+        };
     }
 }

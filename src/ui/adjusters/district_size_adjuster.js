@@ -9,9 +9,11 @@ export default class DistrictSizeAdjuster extends AdjusterBase {
         }
 
         const onChange = (event) => {
-            const districtSize = event.target.value;
+            const districtSize = event.target.value ** 2;
             const districtWidth = Math.sqrt(districtSize);
             const districtsPerRow = Math.sqrt(ps.NUM_DISTRICTS);
+
+            document.getElementById('districtSizeVal').innerText = districtSize;
 
             ps.DISTRICT_SIZE = districtSize;
             ps.GRID_WIDTH = districtsPerRow * districtWidth;

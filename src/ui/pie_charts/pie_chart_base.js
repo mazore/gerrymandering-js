@@ -100,6 +100,10 @@ export default class PieChartBase {
         this.checkHovering(event);
         if (this.hovering) {
             this.dragging = true;
+            if (typeof this.onMouseDown !== 'undefined') {
+                // If subclass defined an onMouseDown method
+                this.onMouseDown();
+            }
         }
     }
 }

@@ -24,7 +24,6 @@ select {
 label {
     /* Hide when not gerrymandering */
     visibility: hidden;
-    padding: 5px;
 }
 
 #stopButton {
@@ -43,4 +42,28 @@ label {
 
 #stopButton:active {
     filter: brightness(0.9);
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 200px;
+    height: 20px;
+    background: #d3d3d3;
+    outline: none;
+    margin: 5px;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance:  none;
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    border-radius: 5px;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
 }

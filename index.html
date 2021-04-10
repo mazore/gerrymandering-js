@@ -22,11 +22,12 @@
 
         <canvas id='piecharts'></canvas>
 
-        <label for='districtSize'>People per District: </label>
-        <select id='districtSize'></select>
-        <!-- <input type='range' min='3' max='10' id='districtSize'> -->
+        <label for='districtSize'>People per District:</label>
+        <input type='range' min='3' max='9' value='3' step='1' class='slider' id='districtSize'>
+        <strong id='districtSizeVal'>9</strong>
         <br>
-        <label for='numDistricts'>Number of Districts: </label>
-        <select id='numDistricts'></select>
+        <label for='numDistricts'>Number of Districts:</label>
+        <input type='range' min='2' max='9' value='4' step='1' class='slider' id='numDistricts'>
+        <strong id='numDistrictsVal'>16</strong>
     </body>
 </html>
