@@ -50,7 +50,7 @@ export default function PieCharts(main) {
     };
 
     this.updateDragging = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         this.populationPieChart.updateDragging(event);
         this.districtsPieChart.updateDragging(event);
     };
