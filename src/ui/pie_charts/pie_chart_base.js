@@ -84,6 +84,7 @@ export default class PieChartBase {
 
     updateDragging(event) {
         if (this.dragging) {
+            event.preventDefault();
             const dx = event.x - this.centerX;
             const dy = this.pieCharts.getTop() + this.pieCharts.centerY - event.y;
             let angle = Math.atan2(dx, dy);
