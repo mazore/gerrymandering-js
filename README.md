@@ -4,6 +4,8 @@ A program that draws district lines around a two-party grid of people in order t
 
 Live demo link: https://mazore.github.io/gerrymandering-js
 
+Demo video: https://youtu.be/9gYAfoOYIUg
+
 Python version (original): https://github.com/mazore/gerrymandering
 
 ## Usage
