@@ -1,6 +1,7 @@
-import PieCharts from './ui/pie_charts.js';
 import Simulation from './simulation.js';
+import PieCharts from './ui/pie_charts.js';
 import ParameterAdjusters from './ui/parameter_adjusters.js';
+import InfoModal from './ui/info_modal.js';
 import StopButton from './ui/stop_button.js';
 
 function Main() {
@@ -35,6 +36,7 @@ function Main() {
     this.simulation = new Simulation(this);
     this.pieCharts = new PieCharts(this);
     this.parameterAdjusters = new ParameterAdjusters(this);
+    this.infoModal = new InfoModal(this);
     this.stopButton = new StopButton(this);
 }
 
