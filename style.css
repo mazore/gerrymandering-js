@@ -68,12 +68,13 @@ label {
     background: #4CAF50;
 }
 
+
 .info-modal {
     position: fixed;
     top: 0px;
     left: 50%;
     transform: translate(-50%, -100%);
-    transition: 200ms ease-in-out;
+    transition: 500ms ease-in-out;
     border: 1px solid black;
     border-radius: 10px;
     z-index: 10;
@@ -95,7 +96,7 @@ label {
 }
 
 .modal-header .title {
-    font-size: 1.25rem;
+    font-size: 3rem;
     font-weight: bold;
 }
 
@@ -110,12 +111,13 @@ label {
 
 .modal-body {
     padding: 10px 15px;
+    font-size: 1.25rem;
 }
 
 #overlay {
     position: fixed;
     opacity: 0;
-    transition: 200ms ease-in-out;
+    transition: 500ms ease-in-out;
     top: 0;
     left: 0;
     right: 0;
