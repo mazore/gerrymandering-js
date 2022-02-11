@@ -36,7 +36,7 @@ function Main() {
     this.simulation = new Simulation(this);
     this.pieCharts = new PieCharts(this);
     this.parameterAdjusters = new ParameterAdjusters(this);
-    // this.infoModal = new InfoModal(this);
+    this.infoModal = new InfoModal(this);
     this.stopButton = new StopButton(this);
 }
 
